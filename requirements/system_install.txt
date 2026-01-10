@@ -1,0 +1,65 @@
+sudo apt update
+sudo apt-get update
+sudo apt-get install mpg123 alsa-utils
+sudo apt install portaudio19-dev python3-dev
+
+
+sudo raspi-config → Interfacing Options → SSH → Yes.​
+
+
+
+# Проверяем уникальные by-id USB-устройства
+ls -l /dev/snd/by-id/
+
+# итого 0
+# lrwxrwxrwx 1 root root 12 янв  7 21:40 usb-Generic_AB13X_USB_Audio_20170726905926-00 -> ../controlC4
+# lrwxrwxrwx 1 root root 12 янв  7 21:40 usb-Jieli_Technology_UACDemoV1.0_4150344C36313517-00 -> ../controlC0
+# lrwxrwxrwx 1 root root 12 янв  7 21:40 usb-XC-TECH_USB_Camera_hzf_4K_20250721-02 -> ../controlC3
+
+sudo /etc/asound.conf
+#
+# ===== AB13X USB Audio (stable by-id binding) =====
+#
+
+pcm.ab13x {
+    type plug
+    slave.pcm "hw:Audio,0"
+}
+
+ctl.ab13x {
+    type hw
+    card Audio
+}
+
+#
+# ===== Default devices =====
+#
+
+pcm.!default {
+    type plug
+    slave.pcm "ab13x"
+}
+
+ctl.!default {
+    type hw
+    card Audio
+}
+
+
+
+
+sudo apt update
+sudo apt install pulseaudio pulseaudio-utils
+pulseaudio --start
+pactl list sinks short
+
+
+# Установите USB динамик как устройство по умолчанию
+pactl set-default-sink alsa_output.usb-Jieli_Technology_UACDemoV1.0_4150344C36313517-00.analog-stereo
+
+# Проверьте, что устройство изменилось
+pactl get-default-sink
+
+
+
+sudo swapoff -a

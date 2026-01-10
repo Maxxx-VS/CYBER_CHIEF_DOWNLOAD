@@ -1,0 +1,162 @@
+# В файл /etc/systemd/journald.conf сохраняем это:                                     
+[Journal]
+Storage=volatile
+RuntimeMaxUse=50M
+RuntimeMaxFileSize=10M
+MaxRetentionSec=2day
+
+# Создаем файлы для каждого сервиса (1-6) с единым префиксом cyber_:
+# Все сервисы будут начинаться с cyber_ для единообразия
+
+##### 1. cyber_casir.service
+# sudo nano /etc/systemd/system/cyber_casir.service
+[Unit]
+Description=Cyber Chief - Casir Timer Service
+After=network.target
+
+[Service]
+Type=simple
+User=sm
+WorkingDirectory=/home/sm/cyber_chief/casir_timer
+Environment="PYTHONPATH=/home/sm/cyber_chief"
+ExecStart=/home/sm/cyber_chief/requirements/venv/bin/python casir_timer.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+##### 2. cyber_cooc.service
+# sudo nano /etc/systemd/system/cyber_cooc.service
+[Unit]
+Description=Cyber Chief - Cooc Timer Service
+After=network.target
+
+[Service]
+Type=simple
+User=sm
+WorkingDirectory=/home/sm/cyber_chief/cooc_timer
+Environment="PYTHONPATH=/home/sm/cyber_chief"
+ExecStart=/home/sm/cyber_chief/requirements/venv/bin/python cook_timer.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+##### 3. cyber_monitor.service (вместо monitoring_system.service)
+# Примечание: Этот сервис уже существует и запущен как cyber_monitor.service
+# sudo nano /etc/systemd/system/cyber_monitor.service
+[Unit]
+Description=Cyber Chief - Monitoring System Service
+After=network.target
+
+[Service]
+Type=simple
+User=sm
+WorkingDirectory=/home/sm/cyber_chief/monitoring_system
+Environment="PYTHONPATH=/home/sm/cyber_chief"
+ExecStart=/home/sm/cyber_chief/requirements/venv/bin/python monitoring_system_main.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+##### 4. cyber_scale.service (вместо scale_counter.service)
+# Этот сервис уже существует и запущен как cyber_scale.service
+# sudo nano /etc/systemd/system/cyber_scale.service
+[Unit]
+Description=Cyber Chief - Scale Counter Service
+After=network.target
+
+[Service]
+Type=simple
+User=sm
+WorkingDirectory=/home/sm/cyber_chief/scale_counter
+Environment="PYTHONPATH=/home/sm/cyber_chief"
+ExecStart=/home/sm/cyber_chief/requirements/venv/bin/python scale_counter.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+##### 5. cyber_client.service
+# sudo nano /etc/systemd/system/cyber_client.service
+[Unit]
+Description=Cyber Chief - Client Timer Service
+After=network.target
+
+[Service]
+Type=simple
+User=sm
+WorkingDirectory=/home/sm/cyber_chief/client_timer
+Environment="PYTHONPATH=/home/sm/cyber_chief"
+ExecStart=/home/sm/cyber_chief/requirements/venv/bin/python client_timer.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+##### 6. cyber_people.service
+# sudo nano /etc/systemd/system/cyber_people.service
+[Unit]
+Description=Cyber Chief - People Counter Service
+After=network.target
+
+[Service]
+Type=simple
+User=sm
+WorkingDirectory=/home/sm/cyber_chief/people_counter
+Environment="PYTHONPATH=/home/sm/cyber_chief"
+ExecStart=/home/sm/cyber_chief/requirements/venv/bin/python people_counter.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+# Обновляем конфигурацию Systemd
+sudo systemctl daemon-reload
+
+# Команды для управления каждым сервисом:
+
+# Для cyber_casir.service:
+# sudo systemctl enable cyber_casir
+# sudo systemctl start cyber_casir
+# sudo systemctl status cyber_casir
+# sudo systemctl stop cyber_casir
+# journalctl -u cyber_casir -f
+
+# Для cyber_cooc.service:
+# sudo systemctl enable cyber_cooc
+# sudo systemctl start cyber_cooc
+# sudo systemctl status cyber_cooc
+
+# Для cyber_monitor.service (уже запущен):
+# sudo systemctl enable cyber_monitor
+# sudo systemctl restart cyber_monitor  # если нужно перезапустить
+# sudo systemctl status cyber_monitor
+
+# Для cyber_scale.service (уже запущен):
+# sudo systemctl enable cyber_scale
+# sudo systemctl restart cyber_scale  # если нужно перезапустить
+# sudo systemctl status cyber_scale
+
+# Для cyber_client.service:
+# sudo systemctl enable cyber_client
+# sudo systemctl start cyber_client
+# sudo systemctl status cyber_client
+
+# Для cyber_people.service:
+# sudo systemctl enable cyber_people
+# sudo systemctl start cyber_people
+# sudo systemctl status cyber_people
+
+# Посмотреть все ваши cyber-сервисы:
+# sudo systemctl list-units --type=service --all | grep cyber
+
+# Посмотреть ошибки:
+# journalctl -u cyber_scale -p err -b

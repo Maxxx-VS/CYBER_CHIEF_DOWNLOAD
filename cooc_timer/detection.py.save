@@ -1,0 +1,147 @@
+                            break
+                
+                if card_num:
+                    # Используем ALSA напрямую с правильной картой
+                    cmd = ['mpg123', '-q', '-a', f'hw:{card_num},0', sound_path]
+                    print(f"[Audio] Используем ALSA устройство: hw:{card_num},0")
+                else:
+                    # Используем mpg123 без указания устройства (будет использовать default)
+                    cmd = ['mpg123', '-q', sound_path]
+                    print("[Audio] Используем default аудиоустройство")
+                
+                subprocess.run(
+                    cmd,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    timeout=5
+                )
+                print(f"[Audio] Воспроизведено через mpg123: {sound_path}")
+                return
+                
+            except subprocess.TimeoutExpired:
+                print("[Audio] Таймаут при воспроизведении через mpg123")
+            # Добавляем текст с нарушением
+            cv2.putText(violation_frame, f'VIOLATION: No gloves ({consecutive_violations_count} times)', 
+                       (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            cv2.putText(violation_frame, f'Timestamp: {datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M:%S")}', 
+                       (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+            
+            # Формируем имя файла
+            dt_object = datetime.fromtimestamp(timestamp)
+            date_str = dt_object.strftime("%Y-%m-%d")
+            time_str = dt_object.strftime("%H:%M:%S")
+            
+            filename_base = f"{ID_POINT}_VIOLATION_{date_str}_{time_str}"
+            filename = f"{filename_base}.jpeg"
+            
+            # Полный путь в RAM диске
+            local_path = os.path.join(RAM_DISK_PATH, filename)
+            
+            try:
+                # 1. Сохраняем локально в RAM
+                success = cv2.imwrite(local_path, violation_frame)
+                if success:
+                    print(f"Временный файл создан: {local_path}")
+                    
+                    # 2. Загружаем на SFTP (внутри метода происходит удаление локального файла)
+                    uploader.upload_file(local_path, filename)
+                    
+                    # 3. Воспроизводим звуковое предупреждение
+                    play_warning_sound()
+                    
+                    # 4. Сбрасываем счетчик нарушений после сохранения
+                    consecutive_violations_count = 0
+                    print(f"[Нарушение] Счетчик сброшен после сохранения фото")
+                else:
+                    print(f"Ошибка сохранения файла: {local_path}")
+                    
+            except Exception as e:
+                print(f"Ошибка при сохранении нарушения: {e}")
+
+def draw_detections(frame, person_detection_info, hat_glove_detection_info, person_detected, roi=ROI, roi_table=ROI_TABLE, violations=None):
+    """Отрисовка результатов"""
+    global consecutive_violations_count
+    
+    # Отрисовка ROI
+    if roi is not None and len(roi) > 0:
+        polygon_points = np.array(roi, dtype=np.int32)
+        cv2.polylines(frame, [polygon_points], True, (255, 255, 0), 2)
+        cv2.putText(frame, 'ROI Polygon', (roi[0][0], roi[0][1]-10), 
+                   cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 2)
+    
+    # Отрисовка ROI Table
+    if roi_table is not None and len(roi_table) > 0:
+        table_points = np.array(roi_table, dtype=np.int32)
+        cv2.polylines(frame, [table_points], True, (0, 255, 255), 2)
+        cv2.putText(frame, 'ROI Table', (roi_table[0][0], roi_table[0][1]-10), 
+                   cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 2)
+    
+    max_conf_person = 0.0
+    for detection in person_detection_info:
+        x1, y1, x2, y2 = detection['bbox']
+        confidence = detection['confidence']
+        max_conf_person = max(max_conf_person, confidence)
+        
+        # Выбираем цвет в зависимости от пересечения с ROI Table и наличия нарушений
+        if detection.get('intersects_table', False):
+            # Проверяем, есть ли нарушения для этого человека
+            has_violation = False
+            if violations:
+                for violation in violations:
+                    if violation['person_bbox'] == detection['bbox']:
+                        has_violation = True
+                        break
+            
+            if has_violation:
+                color = (0, 0, 255)  # Красный для нарушений
+                cv2.putText(frame, 'NO GLOVES!', 
+                           (x1, y1-30), cv2.FONT_HERSHEY_SIMPLEX, 
+                           0.6, color, 2)
+            else:
+                color = (0, 255, 255)  # Желтый для пересечения с ROI Table
+        else:
+            color = (0, 255, 0) if person_detected else (0, 0, 255)
+        
+        cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
+        cv2.putText(frame, f'Person: {confidence:.2f}', 
+                   (x1, y1-10), cv2.FONT_HERSHEY_SIMPLEX, 
+                   0.5, color, 2)
+        
+    for detection in hat_glove_detection_info:
+        x1, y1, x2, y2 = detection['bbox']
+        confidence = detection['confidence']
+        cls_name = detection['class']
+        
+        color = (255, 0, 0)  # Синий для СИЗ
+        cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
+        cv2.putText(frame, f'{cls_name}: {confidence:.2f}', 
+                   (x1, y1+20), cv2.FONT_HERSHEY_SIMPLEX, 
+                   0.5, color, 2)
+
+    status = "CHEF DETECTED" if person_detected else "NO CHEF"
+    status_color = (0, 255, 0) if person_detected else (0, 0, 255)
+    
+    cv2.putText(frame, f'Status: {status}', (10, 30), 
+               cv2.FONT_HERSHEY_SIMPLEX, 1, status_color, 2)
+    
+    if person_detection_info:
+        cv2.putText(frame, f'Max Person Conf: {max_conf_person:.3f}', (10, 70), 
+                   cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+    
+    hat_count = sum(1 for d in hat_glove_detection_info if d['class'] == 'hat')
+    glove_count = sum(1 for d in hat_glove_detection_info if d['class'] == 'glove')
+    cv2.putText(frame, f'HATs: {hat_count}, GLOVEs: {glove_count}', (10, 110), 
+               cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 0), 2)
+    
+    # Отображаем информацию о нарушениях
+    violation_count = len(violations) if violations else 0
+    if violation_count > 0:
+        cv2.putText(frame, f'VIOLATIONS: {violation_count}', (10, 150), 
+                   cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+    
+    # Отображаем счетчик подряд идущих нарушений
+    if consecutive_violations_count > 0:
+        cv2.putText(frame, f'Consecutive: {consecutive_violations_count}/{COUNT_VIOLATIONS}', 
+                   (10, 190), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+    
+    return frame

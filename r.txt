@@ -1,0 +1,5 @@
+[Violation] Consecutive: 1/2
+[Violation] Consecutive: 2/2
+[ATTENTION] Threshold reached. Saving evidence.
+SFTP: Загрузка 27_VIOLATION_2026-01-10_10:55:44.jpeg -> upload/violation/27/27_VIOLATION_2026-01-10_10:55:44.jpeg
+SFTP: Файл успешно загружен.

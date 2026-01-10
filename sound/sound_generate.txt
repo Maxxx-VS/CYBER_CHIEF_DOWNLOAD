@@ -1,0 +1,9 @@
+# Переходим в директорию piper и запускаем генерацию
+echo "Обнаружен пресонал без средств индивидуальной защиты! Наденьте перчатки и головной убор!" | ./piper --model ru_RU-ruslan-medium.onnx --config ru_RU-ruslan-medium.json --output_file test_sound.mp3
+# Для корректного воспроизведения правим файл
+ffmpeg -i camera.mp3 -acodec libmp3lame -ar 44100 -ab 128k camera_fixed.mp3
+mv camera_fixed.mp3 camera.mp3
+
+
+
+
