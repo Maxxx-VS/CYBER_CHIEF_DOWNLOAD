@@ -55,7 +55,7 @@ def run_detection_session(duration, model, ram_disk_path):
                     absence_minutes = int((current_time - current_absence_start) // 60)
                     if absence_minutes > 0:
                         save_absence_to_db(current_absence_start, current_time, absence_minutes)
-                    print(f"[{time.strftime('%H:%M:%S')}] Кассир вернулся")
+                    # Print "Кассир вернулся" удален
                     is_absent = False
                     current_absence_start = None
                 timeout_start = None
@@ -66,7 +66,7 @@ def run_detection_session(duration, model, ram_disk_path):
                     elif (current_time - timeout_start) >= config.TIMEOUT_DURATION:
                         is_absent = True
                         current_absence_start = current_time
-                        print(f"[{time.strftime('%H:%M:%S')}] Зафиксировано отсутствие")
+                        # Print "Зафиксировано отсутствие" удален
 
             # Визуализация (Debug)
             if config.SHOW_DETECTION:

@@ -1,3 +1,5 @@
+# detection_processor.py
+
 import time
 import threading
 import cv2
@@ -104,8 +106,8 @@ class DetectionProcessor:
                         # Сохраняем в БД
                         save_people_count_to_db(unique_people_count)
                         
-                        # Выводим в консоль
-                        print(f"За последние {self.report_interval/60} минут обнаружено {unique_people_count} уникальных людей")
+                        # Убрали дублирующий вывод в консоль
+                        # print(f"За последние {self.report_interval/60} минут обнаружено {unique_people_count} уникальных людей")
                         
                         # Сбрасываем ВСЕ счетчики ID (важное изменение!)
                         self.all_tracked_people.clear()

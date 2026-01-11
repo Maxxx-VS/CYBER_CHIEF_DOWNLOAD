@@ -37,9 +37,6 @@ class VoiceService:
     # --------------------------------------------------
 
     def _ensure_mic_level(self):
-        """
-        Настройка микрофона по ИМЕНИ карты, а не номеру
-        """
         try:
             subprocess.run(
                 ['amixer', '-c', 'Audio', 'sset', 'Mic', '100%', 'unmute'],
@@ -76,9 +73,6 @@ class VoiceService:
     # --------------------------------------------------
 
     def _get_input_device_index(self, p):
-        """
-        Поиск микрофона по имени (устойчиво)
-        """
         for i in range(p.get_device_count()):
             try:
                 info = p.get_device_info_by_index(i)
@@ -130,12 +124,13 @@ class VoiceService:
             return
 
         print(f"--- Voice active (KEY: '{self.target_word}') ---")
+
         model = Model(self.config.VOSK_MODEL_PATH)
 
-        STREAM_LIFETIME = 1800
-        RECOGNIZER_LIFETIME = 900
+        STREAM_LIFETIME = 300            # 5 минут
+        RECOGNIZER_LIFETIME = 120        # 2 минуты
         MAX_SILENCE_TIME = 10.0
-        MAX_NO_RECOGNITION_TIME = 120.0  # watchdog
+        MAX_NO_RECOGNITION_TIME = 30.0   # watchdog
 
         while self.running:
             p = stream = recognizer = None
@@ -169,16 +164,27 @@ class VoiceService:
                 while self.running:
                     now = time.time()
 
+                    # --- НЕ слушаем микрофон, пока говорим ---
+                    if self.speaking_event.is_set():
+                        time.sleep(0.05)
+                        continue
+
                     if now - start_time > STREAM_LIFETIME:
+                        print("[Voice] Stream lifetime reached")
                         break
 
                     data = stream.read(4000, exception_on_overflow=False)
-                    rms = self._calculate_rms(data)
 
+                    # --- защита от пустого аудио ---
+                    if np.max(np.abs(np.frombuffer(data, dtype=np.int16))) < 5:
+                        continue
+
+                    rms = self._calculate_rms(data)
                     if rms > 10:
                         last_sound_time = now
 
                     if now - last_sound_time > MAX_SILENCE_TIME:
+                        print("[Voice] Silence timeout")
                         break
 
                     if self.mic_gain > 1.0:
@@ -186,19 +192,13 @@ class VoiceService:
                         audio = np.clip(audio * self.mic_gain, -32768, 32767)
                         data = audio.astype(np.int16).tobytes()
 
-                    # --- Watchdog: пересоздание recognizer ---
+                    # --- Watchdog ---
                     if (
                         now - recognizer_start_time > RECOGNIZER_LIFETIME
                         or now - last_recognition_time > MAX_NO_RECOGNITION_TIME
                     ):
-                        try:
-                            recognizer.FinalResult()
-                        except Exception:
-                            pass
-                        recognizer = create_recognizer()
-                        recognizer_start_time = now
-                        last_recognition_time = now
-                        print("[Voice] Recognizer reset")
+                        print("[Voice] Full audio reset (watchdog)")
+                        break
 
                     if recognizer.AcceptWaveform(data):
                         last_recognition_time = now
@@ -211,23 +211,38 @@ class VoiceService:
                             self.tts.queue.put(
                                 f"Распознано слово: {self.target_word}"
                             )
+                    else:
+                        # --- PartialResult тоже считается активностью ---
+                        try:
+                            partial = json.loads(recognizer.PartialResult())
+                            if partial.get("partial"):
+                                last_recognition_time = now
+                        except Exception:
+                            pass
 
             except Exception as e:
                 print(f"[Voice] Error: {e}")
                 time.sleep(1)
 
             finally:
-                if recognizer:
-                    try:
+                try:
+                    if recognizer:
                         recognizer.FinalResult()
-                    except Exception:
-                        pass
+                except Exception:
+                    pass
 
-                if stream:
-                    stream.stop_stream()
-                    stream.close()
-                if p:
-                    p.terminate()
+                try:
+                    if stream:
+                        stream.stop_stream()
+                        stream.close()
+                except Exception:
+                    pass
+
+                try:
+                    if p:
+                        p.terminate()
+                except Exception:
+                    pass
 
                 time.sleep(0.5)
 

@@ -140,15 +140,14 @@ def check_violation(person_info, glove_detections, frame, timestamp):
     
     if violations:
         consecutive_violations_count += 1
-        print(f"[Violation] Consecutive: {consecutive_violations_count}/{COUNT_VIOLATIONS}")
+        # print(f"[Violation] Consecutive: {consecutive_violations_count}/{COUNT_VIOLATIONS}")
     else:
         consecutive_violations_count = 0
     return violations
 
 def play_warning_sound():
     """
-    Воспроизводит звук предупреждения, используя логику из voice.py (mpg123).
-    Запускается в отдельном потоке, чтобы не блокировать видеопоток.
+    Воспроизводит звук предупреждения.
     """
     global is_sound_playing
     sound_path = SOUND_PATH_WARNING
@@ -157,7 +156,6 @@ def play_warning_sound():
         print(f"Warning sound file not found: {sound_path}")
         return
     
-    # Блокировка для предотвращения наложения звуков
     with sound_lock:
         if is_sound_playing:
             return
@@ -165,7 +163,6 @@ def play_warning_sound():
         
     def play():
         try:
-            # Используем subprocess.run как в voice.py для надежности
             subprocess.run(
                 ['mpg123', '-q', sound_path],
                 stdout=subprocess.DEVNULL,
@@ -187,7 +184,7 @@ def save_violation_images(frame, violations):
     global consecutive_violations_count
     
     if consecutive_violations_count >= COUNT_VIOLATIONS:
-        print(f"[ATTENTION] Threshold reached ({COUNT_VIOLATIONS}). Saving evidence and playing sound.")
+        # print(f"[ATTENTION] Threshold reached ({COUNT_VIOLATIONS}). Saving evidence.")
         
         uploader = SFTPUploader()
         
@@ -216,9 +213,6 @@ def save_violation_images(frame, violations):
                         # Если не удалось загрузить -> сохраняем в оффлайн буфер
                         print("SFTP upload failed. Saving to offline buffer.")
                         save_violation_to_local(local_path, filename)
-                        # upload_file удаляет файл при успехе. 
-                        # Если неудача - он пытается удалить, но save_violation_to_local 
-                        # копирует его перед удалением из RAM.
                     
                     # Воспроизведение звука при достижении порога
                     play_warning_sound()

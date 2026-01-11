@@ -46,7 +46,6 @@ def init_local_db():
 init_local_db()
 # ------------------------------------------------
 
-# Сборка URL подключения внутри модуля
 DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 try:
@@ -70,9 +69,7 @@ def get_db_session():
 def get_trading_point_schedule():
     """
     Получение времени работы торговой точки. 
-    Возвращает False, если нет связи с БД.
     """
-    # Используем словарь из config напрямую (он изменяемый)
     global WORK_SCHEDULE
     
     session = get_db_session()
@@ -87,7 +84,6 @@ def get_trading_point_schedule():
             WORK_SCHEDULE['end_time'] = point.ВремяДо
             WORK_SCHEDULE['gmt_offset'] = point.GTM
             
-            # Обновляем переменную в config (т.к. она там импортирована, изменения отразятся)
             import config
             config.LAST_SCHEDULE_UPDATE = time.time()
             return True
@@ -156,7 +152,7 @@ def sync_offline_data():
             conn.close()
             return # Нет интернета
 
-        print(f"Syncing offline data: {len(client_rows)} clients, {len(cashier_rows)} cashier records...")
+        # [LOG REMOVED] "Syncing offline data..."
         
         # Обработка клиентов
         client_ids_to_del = []
@@ -193,7 +189,7 @@ def sync_offline_data():
             cursor.execute(f'DELETE FROM absence_buffer WHERE id IN ({",".join(map(str, cashier_ids_to_del))})')
         
         conn.commit()
-        print("Offline data synced.")
+        # [LOG REMOVED] "Offline data synced."
         conn.close()
 
     except Exception as e:
@@ -225,7 +221,7 @@ def save_absence_to_db(start_time, end_time, absence_minutes):
         )
         session.add(new_record)
         session.commit()
-        print(f"Сохранено в БД (Кассир): {absence_minutes} мин")
+        # [LOG REMOVED] "Сохранено в БД (Кассир)"
         return True
     except Exception as e:
         print(f"DB Error (Cashier): {e}. Saving locally.")
@@ -255,7 +251,7 @@ def save_client_presence_to_db(appearance_time, departure_time, wait_minutes):
         )
         session.add(new_record)
         session.commit()
-        print(f"Сохранено в БД (Клиент): {wait_minutes} мин")
+        # [LOG REMOVED] "Сохранено в БД (Клиент)"
         return True
     except Exception as e:
         print(f"DB Error (Client): {e}. Saving locally.")

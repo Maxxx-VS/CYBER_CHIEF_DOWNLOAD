@@ -1,5 +1,12 @@
 [Violation] Consecutive: 1/2
 [Violation] Consecutive: 2/2
-[ATTENTION] Threshold reached. Saving evidence.
-SFTP: Загрузка 27_VIOLATION_2026-01-10_10:55:44.jpeg -> upload/violation/27/27_VIOLATION_2026-01-10_10:55:44.jpeg
+[ATTENTION] Threshold reached (2). Saving evidence and playing sound.
+SFTP: Загрузка 27_VIOLATION_2026-01-10_12:49:53.jpeg -> upload/violation/27/27_VIOLATION_2026-01-10_12:49:53.jpeg
 SFTP: Файл успешно загружен.
+[Violation] Consecutive: 1/2
+[Violation] Consecutive: 1/2
+[Violation] Consecutive: 2/2
+[ATTENTION] Threshold reached (2). Saving evidence and playing sound.
+SFTP: Загрузка 27_VIOLATION_2026-01-10_12:51:08.jpeg -> upload/violation/27/27_VIOLATION_2026-01-10_12:51:08.jpeg
+SFTP: Файл успешно загружен.
+[Violation] Consecutive: 1/2

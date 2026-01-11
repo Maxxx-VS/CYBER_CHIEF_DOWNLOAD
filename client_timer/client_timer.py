@@ -43,7 +43,6 @@ def run_cashier_session(duration, model, ram_disk_path):
             ret, frame = video_stream.read()
             if not ret:
                 if SHOW_DETECTION:
-                    # Можно вывести заглушку "Нет сигнала", если нужно
                     pass
                 time.sleep(CAPTURE_INTERVAL)
                 continue
@@ -64,7 +63,7 @@ def run_cashier_session(duration, model, ram_disk_path):
                     absence_min = int((loop_start - current_absence_start) // 60)
                     if absence_min > 0:
                         save_absence_to_db(current_absence_start, loop_start, absence_min)
-                    print(f"[{time.strftime('%H:%M:%S')}] Кассир вернулся (был отсутствовал {absence_min} мин)")
+                    # [LOG REMOVED] Operational noise
                     is_absent = False
                     current_absence_start = None
                 timeout_start = None
@@ -76,7 +75,7 @@ def run_cashier_session(duration, model, ram_disk_path):
                     elif loop_start - timeout_start >= TIMEOUT_DURATION:
                         is_absent = True
                         current_absence_start = loop_start
-                        print(f"[{time.strftime('%H:%M:%S')}] Зафиксировано отсутствие кассира")
+                        # [LOG REMOVED] Operational noise
             
             # Отрисовка
             if SHOW_DETECTION:
@@ -100,7 +99,7 @@ def run_cashier_session(duration, model, ram_disk_path):
                 os.remove(photo_path)
             except OSError: pass
             
-            # Умная пауза (чтобы не превысить CAPTURE_INTERVAL, но и не спать лишнего)
+            # Умная пауза
             processing_time = time.time() - loop_start
             sleep_time = max(0, CAPTURE_INTERVAL - processing_time)
             if sleep_time > 0:
@@ -124,7 +123,7 @@ def run_cashier_session(duration, model, ram_disk_path):
 
 def monitor_cashier_absence():
     """
-    Главный цикл управления состоянием (Копия архитектуры client_monitoring.py)
+    Главный цикл управления состоянием
     """
     ram_disk_path = setup_ram_disk()
     
@@ -140,11 +139,11 @@ def monitor_cashier_absence():
 
     try:
         while True:
-            # 1. Синхронизация данных (отправка накопленного за ночь/оффлайн)
+            # 1. Синхронизация данных
             sync_offline_data()
             
             # 2. Получение/Обновление расписания
-            print("Синхронизация расписания...")
+            # [LOG REMOVED] "Синхронизация расписания..."
             schedule_loaded = False
             while not schedule_loaded:
                 schedule_loaded = get_trading_point_schedule()
@@ -152,12 +151,15 @@ def monitor_cashier_absence():
                     print("Нет связи с БД. Повтор через 60 сек...")
                     time.sleep(60)
             
-            # Вывод текущего расписания для логов
+            # Вывод расписания только при старте или изменении можно было бы оставить, 
+            # но для минимизации оставим только при явном обновлении, если нужно.
+            # В данном цикле он обновляется каждую итерацию (сутки/смена), поэтому лог полезен для отладки старта смены.
+            # Оставляем только важный статус.
             if WORK_SCHEDULE['start_time'] and WORK_SCHEDULE['end_time']:
-                print(f"Расписание обновлено: {WORK_SCHEDULE['start_time']} - {WORK_SCHEDULE['end_time']} (GMT+{WORK_SCHEDULE['gmt_offset']})")
+                 # Можно закомментировать, если этот лог слишком частый (раз в смену - приемлемо)
+                 pass 
 
             # 3. Расчет состояния (WORK или SLEEP)
-            # Используем ту же функцию, что и client_monitoring для единообразия
             state, delay = get_next_state_delay()
             
             if state == 'WORK':
@@ -168,12 +170,12 @@ def monitor_cashier_absence():
                 # Режим сна
                 print(f"[{time.strftime('%H:%M:%S')}] Не рабочие часы. Сон {delay:.0f} секунд.")
                 
-                # Закрываем окна OpenCV на ночь, если они вдруг остались
+                # Закрываем окна OpenCV на ночь
                 if SHOW_DETECTION:
                     cv2.destroyAllWindows()
                     
                 time.sleep(delay)
-                print("Пробуждение...")
+                # [LOG REMOVED] "Пробуждение..."
 
     except KeyboardInterrupt:
         print("\nОстановка пользователем")

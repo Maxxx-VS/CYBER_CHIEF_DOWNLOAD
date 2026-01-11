@@ -76,7 +76,7 @@ def save_absence_to_local(start_ts, end_ts, minutes):
                       (start_ts, end_ts, minutes))
         conn.commit()
         conn.close()
-        print(f"Saved locally (offline): {minutes} min")
+        # Print удален для минимизации вывода
     except Exception as e:
         print(f"Critical local DB error: {e}")
 
@@ -96,7 +96,7 @@ def sync_offline_data():
         conn.close()
         return # Все еще нет интернета
 
-    print(f"Attempting to sync {len(rows)} offline records...")
+    # Print "Attempting to sync..." удален
     ids_to_delete = []
     
     try:
@@ -120,7 +120,7 @@ def sync_offline_data():
         if ids_to_delete:
             cursor.execute(f'DELETE FROM absence_buffer WHERE id IN ({",".join(map(str, ids_to_delete))})')
             conn.commit()
-        print("Offline data synced successfully.")
+        # Print "Offline data synced successfully" удален
         
     except Exception as e:
         print(f"Sync error: {e}")
@@ -154,7 +154,7 @@ def save_absence_to_db(start_time_ts, end_time_ts, absence_minutes):
         
         session.add(absence_record)
         session.commit()
-        print(f"Сохранено в БД: {start_dt} - {end_dt} ({absence_minutes} мин)")
+        # Print успешного сохранения удален (дублирование данных)
         return True
         
     except Exception as e:

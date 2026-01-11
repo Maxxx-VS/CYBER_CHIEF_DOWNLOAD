@@ -39,7 +39,7 @@ class SFTPUploader:
         transport = None
         sftp = None
         try:
-            print(f"SFTP: Проверка структуры директорий на сервере для точки {ID_POINT}...")
+            # print(f"SFTP: Проверка структуры директорий на сервере для точки {ID_POINT}...")
             transport = self._create_transport()
             sftp = paramiko.SFTPClient.from_transport(transport)
 
@@ -54,10 +54,9 @@ class SFTPUploader:
                 try:
                     sftp.stat(path)
                 except FileNotFoundError:
-                    print(f"SFTP: Создание директории {path}...")
+                    # print(f"SFTP: Создание директории {path}...")
                     sftp.mkdir(path)
             
-            print(f"SFTP: Директория {self.target_dir} готова к работе.")
             return True
 
         except Exception as e:
@@ -85,11 +84,11 @@ class SFTPUploader:
             sftp = paramiko.SFTPClient.from_transport(transport)
             
             remote_path = f"{self.target_dir}/{filename}"
-            print(f"SFTP: Загрузка {filename} -> {remote_path}")
+            # print(f"SFTP: Загрузка {filename} -> {remote_path}")
             
             sftp.put(local_path, remote_path)
             success = True
-            print(f"SFTP: Файл успешно загружен.")
+            # print(f"SFTP: Файл успешно загружен.")
             
         except Exception as e:
             print(f"SFTP Error при загрузке файла {filename}: {e}")
@@ -101,7 +100,6 @@ class SFTPUploader:
             if os.path.exists(local_path):
                 try:
                     os.remove(local_path)
-                    # print(f"RAM: Временный файл {local_path} удален.")
                 except OSError as e:
                     print(f"RAM Error: Не удалось удалить файл {local_path}: {e}")
         

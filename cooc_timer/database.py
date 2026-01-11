@@ -72,16 +72,12 @@ def get_gmt_offset():
         return False
     
     try:
-        # Используем имена из конфига или дефолтные
-        # Примечание: Для ORM запросов лучше использовать атрибуты модели, 
-        # но модель TradePoint уже определена.
         stmt = select(TradePoint.GTM).where(TradePoint.id_точки == ID_POINT)
         result = session.execute(stmt).scalar()
         
         if result is not None:
             WORK_SCHEDULE['gmt_offset'] = result
             LAST_SCHEDULE_UPDATE = time.time()
-            print(f"Получено GMT смещение: {result} часов")
             return True
         else:
             print(f"Ошибка: Торговая точка с id={ID_POINT} не найдена")
@@ -110,7 +106,6 @@ def save_work_session_to_local(start_ts, end_ts, duration):
                       (start_ts, end_ts, duration))
         conn.commit()
         conn.close()
-        print(f"Saved locally (offline): Session {duration} min")
     except Exception as e:
         print(f"Local DB Error: {e}")
 
@@ -118,7 +113,7 @@ def save_violation_to_local(ram_path, filename):
     """Перемещает файл из RAM в постоянную папку и записывает в SQLite"""
     try:
         target_path = os.path.join(OFFLINE_IMG_DIR, filename)
-        shutil.copy2(ram_path, target_path) # Copy instead of move initially to be safe
+        shutil.copy2(ram_path, target_path) 
         
         conn = sqlite3.connect(LOCAL_DB_PATH)
         cursor = conn.cursor()
@@ -126,7 +121,6 @@ def save_violation_to_local(ram_path, filename):
                       (target_path, filename))
         conn.commit()
         conn.close()
-        print(f"Saved locally (offline): Violation image {filename}")
         return True
     except Exception as e:
         print(f"Local DB Error (Violation): {e}")
@@ -144,7 +138,6 @@ def sync_offline_data():
     if sessions:
         pg_session = get_db_session()
         if pg_session:
-            print(f"Syncing {len(sessions)} offline sessions...")
             ids_to_del = []
             try:
                 for row in sessions:
@@ -166,7 +159,6 @@ def sync_offline_data():
                 if ids_to_del:
                     cursor.execute(f'DELETE FROM work_session_buffer WHERE id IN ({",".join(map(str, ids_to_del))})')
                     conn.commit()
-                print("Sessions synced.")
             except Exception as e:
                 print(f"Sync Error (Sessions): {e}")
                 pg_session.rollback()
@@ -178,9 +170,7 @@ def sync_offline_data():
     violations = cursor.fetchall()
     
     if violations:
-        print(f"Syncing {len(violations)} offline violations...")
         uploader = SFTPUploader()
-        # Проверяем связь SFTP простым способом (или доверяем upload_file)
         ids_to_del = []
         
         for row in violations:
@@ -189,8 +179,6 @@ def sync_offline_data():
                 # Пытаемся загрузить
                 if uploader.upload_file(local_path, filename):
                     ids_to_del.append(row_id)
-                    # upload_file удаляет локальный файл, но мы передали путь из OFFLINE_IMG_DIR
-                    # upload_file в sftp_client удаляет файл.
             else:
                 # Файла нет, удаляем запись
                 ids_to_del.append(row_id)
@@ -198,7 +186,6 @@ def sync_offline_data():
         if ids_to_del:
             cursor.execute(f'DELETE FROM violation_buffer WHERE id IN ({",".join(map(str, ids_to_del))})')
             conn.commit()
-            print("Violations synced.")
 
     conn.close()
 
@@ -230,7 +217,6 @@ def save_work_session_to_db(start_time, end_time, duration_seconds):
         )
         session.execute(stmt)
         session.commit()
-        print(f"Saved to DB: {duration_minutes} min")
         return True
     except Exception as e:
         print(f"Postgres Error: {e}. Switching to offline buffer.")

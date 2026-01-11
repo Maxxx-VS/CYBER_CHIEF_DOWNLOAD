@@ -18,7 +18,6 @@ from utils import setup_ram_disk, get_next_state_delay
 def run_detection_session(duration, model, ram_disk_path):
     """
     Запускает логику мониторинга на duration секунд.
-    Вся бизнес-логика (таймеры клиентов, кассира) находится здесь.
     """
     print(f"[{time.strftime('%H:%M:%S')}] Начало рабочей смены. Длительность: {duration/3600:.2f} ч.")
     
@@ -28,7 +27,7 @@ def run_detection_session(duration, model, ram_disk_path):
     
     session_end_time = time.time() + duration
     
-    # Переменные состояния (Логика из исходного файла)
+    # Переменные состояния
     client_present = False
     client_appearance_start = None
     client_confirmed_appearance_time = None
@@ -55,13 +54,11 @@ def run_detection_session(duration, model, ram_disk_path):
                 time.sleep(CAPTURE_INTERVAL_CLIENT)
                 continue
             
-            # Сохранение фото (требование исходной логики)
+            # Сохранение фото
             photo_path = os.path.join(ram_disk_path, f"client_{int(current_time)}.jpg")
             cv2.imwrite(photo_path, frame)
             
-            # Детекция: 
-            # ROI index 1 -> Client (в config ROI_LIST=[ROI1(cashier), ROI2(client)])
-            # ROI index 0 -> Cashier
+            # Детекция
             client_detected, _, client_info = detect_person_in_specific_roi(
                 frame, model, 1, CONFIDENCE_THRESHOLD_CLIENT, ROI_LIST
             )
@@ -69,19 +66,19 @@ def run_detection_session(duration, model, ram_disk_path):
                 frame, model, 0, CONFIDENCE_THRESHOLD_CLIENT, ROI_LIST
             )
             
-            # --- ЛОГИКА ОТСЛЕЖИВАНИЯ (сохранена 1-в-1) ---
+            # --- ЛОГИКА ОТСЛЕЖИВАНИЯ ---
             if client_detected:
                 if not client_present:
                     if client_appearance_timer_start is None:
                         client_appearance_timer_start = current_time
-                        print(f"[{time.strftime('%H:%M:%S')}] Обнаружен клиент, таймер...")
+                        # [LOG REMOVED] "Обнаружен клиент, таймер..."
                     elif current_time - client_appearance_timer_start >= CLIENT_APPEARANCE_TIMER:
                         client_present = True
                         client_confirmed_appearance_time = current_time
                         client_appearance_start = client_appearance_timer_start
                         client_appearance_timer_start = None
                         cashier_check_start = current_time
-                        print(f"[{time.strftime('%H:%M:%S')}] Клиент подтвержден")
+                        # [LOG REMOVED] "Клиент подтвержден"
                 client_departure_timer_start = None
                 
             else: # Клиент не обнаружен
@@ -105,7 +102,7 @@ def run_detection_session(duration, model, ram_disk_path):
                         client_confirmed_appearance_time = None
                         client_departure_timer_start = None
                         cashier_check_start = None
-                        print(f"[{time.strftime('%H:%M:%S')}] Уход клиента подтвержден")
+                        # [LOG REMOVED] "Уход клиента подтвержден"
                 else:
                     client_appearance_timer_start = None
             # -----------------------------------------------
@@ -162,7 +159,7 @@ def run_detection_session(duration, model, ram_disk_path):
     except Exception as e:
         print(f"Ошибка в сессии мониторинга: {e}")
     finally:
-        # Фиксация данных при завершении сессии (конец дня или ошибка)
+        # Фиксация данных при завершении сессии
         if client_present and client_confirmed_appearance_time:
             current_time = time.time()
             if cashier_check_start and (current_time - cashier_check_start >= CASHIER_WAIT_TIMER):
@@ -189,15 +186,14 @@ def monitor_client_presence():
 
     os.environ['QT_QPA_PLATFORM'] = 'xcb'
     print("Запуск мониторинга наличия клиентов (Smart Schedule)...")
-    print(f"ROI1 (Кассир): {'активна' if ROI_LIST and len(ROI_LIST) > 0 else 'не активна'}")
-    print(f"ROI2 (Клиент): {'активна' if ROI_LIST and len(ROI_LIST) > 1 else 'не активна'}")
+    # [LOG REMOVED] ROI debug info
 
     try:
         while True:
-            # 1. Синхронизация оффлайн данных (если интернет появился)
+            # 1. Синхронизация оффлайн данных
             sync_offline_data()
             
-            # 2. Получение расписания (Retry loop если нет интернета)
+            # 2. Получение расписания
             schedule_loaded = False
             while not schedule_loaded:
                 schedule_loaded = get_trading_point_schedule()
@@ -209,13 +205,13 @@ def monitor_client_presence():
             state, delay = get_next_state_delay()
             
             if state == 'WORK':
-                # Запускаем сессию на рассчитанное время
+                # Запускаем сессию
                 run_detection_session(delay, model, ram_disk_path)
             else:
                 # Спим до начала смены
                 print(f"[{time.strftime('%H:%M:%S')}] Нерабочее время. Сон {delay/3600:.2f} ч.")
                 time.sleep(delay)
-                print("Пробуждение...")
+                # [LOG REMOVED] "Пробуждение..."
                 
     except KeyboardInterrupt:
         print("\nОстановка пользователем")

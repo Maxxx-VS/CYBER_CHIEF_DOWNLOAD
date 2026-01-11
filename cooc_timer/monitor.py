@@ -107,7 +107,7 @@ def monitor_chef_work_time():
                 if not is_working:
                     work_session_start = current_time
                     is_working = True
-                    print(f"[{time.strftime('%H:%M:%S')}] Начало рабочей сессии")
+                    # print(f"[{time.strftime('%H:%M:%S')}] Начало рабочей сессии")
             
             elif is_working and last_detection_time is not None:
                 # Проверка таймаута

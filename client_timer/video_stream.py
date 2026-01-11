@@ -53,7 +53,7 @@ class VideoStream:
             return False
             
         self.reconnect_attempts += 1
-        print(f"Попытка переподключения #{self.reconnect_attempts}...")
+        # [LOG REMOVED] "Попытка переподключения..."
         
         success = self.initialize_capture()
         

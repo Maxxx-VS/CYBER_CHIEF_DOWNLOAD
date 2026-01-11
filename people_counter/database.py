@@ -1,3 +1,5 @@
+# database.py
+
 import time
 import sqlite3
 import os
@@ -42,7 +44,8 @@ def save_to_local_db(point_id, record_datetime, record_date, record_hour, count)
         ''', (point_id, str(record_datetime), str(record_date), record_hour, count))
         conn.commit()
         conn.close()
-        print(f"[OFFLINE] Данные сохранены локально: {count} чел.")
+        # Убрали вывод успешного сохранения в локальный буфер, чтобы не спамить в лог
+        # print(f"[OFFLINE] Данные сохранены локально: {count} чел.")
     except Exception as e:
         print(f"Критическая ошибка локального сохранения: {e}")
 
@@ -147,7 +150,9 @@ def save_people_count_to_db(people_count):
         
         session.add(people_record)
         session.commit()
-        print(f"Сохранено в БД: {people_count} человек(а) в {record_datetime}")
+        
+        # Убрали дублирующий вывод успешной отправки, так как данные уже в БД
+        # print(f"Сохранено в БД: {people_count} человек(а) в {record_datetime}")
         
     except Exception as e:
         print(f"Ошибка подключения к БД ({e}). Переход в оффлайн режим.")
