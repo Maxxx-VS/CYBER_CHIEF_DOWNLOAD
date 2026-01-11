@@ -50,25 +50,12 @@ source venv/bin/activate
 pip install --upgrade pip
 pip install setuptools wheel
 
-# Для ARM используем совместимые версии
-if [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "armv7l" ]; then
-    echo "Installing ARM-compatible packages..."
-    pip install numpy==1.26.4
-else
-    pip install numpy==1.24.3
-fi
-
-pip install pillow python-dotenv pyserial schedule sqlalchemy requests tqdm
-
-# Установка opencv-python
-pip install opencv-python==4.8.1.78  # Более новая версия для ARM
-
-# Установка pyaudio
-pip install pyaudio
-
-# Остальные зависимости
+# Установка всех зависимостей из requirements.txt
 if [ -f "requirements.txt" ]; then
     pip install -r requirements.txt
+else
+    echo "ERROR: requirements.txt not found!"
+    exit 1
 fi
 
 echo "=== INSTALL COMPLETE ==="
