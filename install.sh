@@ -53,7 +53,7 @@ pip install setuptools wheel
 # Для ARM используем совместимые версии
 if [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "armv7l" ]; then
     echo "Installing ARM-compatible packages..."
-    pip install numpy==2.2.6
+    pip install numpy==1.26.4
 else
     pip install numpy==1.24.3
 fi
