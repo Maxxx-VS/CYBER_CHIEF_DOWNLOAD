@@ -10,7 +10,7 @@ from config import (
     CONFIDENCE_THRESHOLD_CLIENT, SHOW_DETECTION_CLIENT, CAPTURE_INTERVAL_CLIENT,
     CLIENT_APPEARANCE_TIMER, CLIENT_DEPARTURE_TIMER, CASHIER_WAIT_TIMER
 )
-from database import get_trading_point_schedule, save_client_presence_to_db, sync_offline_data
+from database import get_trading_point_schedule, save_client_presence_to_db, sync_offline_data, is_cashier_present_now
 from video_stream import VideoStream
 from detection import detect_person_in_specific_roi, draw_detections
 from utils import setup_ram_disk, get_next_state_delay
@@ -36,6 +36,11 @@ def run_detection_session(duration, model, ram_disk_path):
     client_appearance_timer_start = None
     client_departure_timer_start = None
     
+    # Для оптимизации запросов к БД проверяем кассира не каждый кадр, а каждые 5 секунд
+    last_cashier_check = 0
+    cashier_check_interval = 5  # секунд
+    cashier_detected = True  # По умолчанию считаем, что кассир на месте
+    
     try:
         while time.time() < session_end_time:
             iteration_start = time.time()
@@ -58,27 +63,28 @@ def run_detection_session(duration, model, ram_disk_path):
             photo_path = os.path.join(ram_disk_path, f"client_{int(current_time)}.jpg")
             cv2.imwrite(photo_path, frame)
             
-            # Детекция
+            # Детекция клиента (только клиент, кассир проверяется через БД)
+            # Используем индекс 0, так как ROI_LIST теперь содержит только ROI для клиента
             client_detected, _, client_info = detect_person_in_specific_roi(
-                frame, model, 1, CONFIDENCE_THRESHOLD_CLIENT, ROI_LIST
-            )
-            cashier_detected, _, cashier_info = detect_person_in_specific_roi(
                 frame, model, 0, CONFIDENCE_THRESHOLD_CLIENT, ROI_LIST
             )
+            
+            # Проверяем кассира через БД (раз в cashier_check_interval секунд для оптимизации)
+            if current_time - last_cashier_check >= cashier_check_interval:
+                cashier_detected = is_cashier_present_now()
+                last_cashier_check = current_time
             
             # --- ЛОГИКА ОТСЛЕЖИВАНИЯ ---
             if client_detected:
                 if not client_present:
                     if client_appearance_timer_start is None:
                         client_appearance_timer_start = current_time
-                        # [LOG REMOVED] "Обнаружен клиент, таймер..."
                     elif current_time - client_appearance_timer_start >= CLIENT_APPEARANCE_TIMER:
                         client_present = True
                         client_confirmed_appearance_time = current_time
                         client_appearance_start = client_appearance_timer_start
                         client_appearance_timer_start = None
                         cashier_check_start = current_time
-                        # [LOG REMOVED] "Клиент подтвержден"
                 client_departure_timer_start = None
                 
             else: # Клиент не обнаружен
@@ -102,14 +108,13 @@ def run_detection_session(duration, model, ram_disk_path):
                         client_confirmed_appearance_time = None
                         client_departure_timer_start = None
                         cashier_check_start = None
-                        # [LOG REMOVED] "Уход клиента подтвержден"
                 else:
                     client_appearance_timer_start = None
             # -----------------------------------------------
 
             # Визуализация
             if SHOW_DETECTION_CLIENT:
-                all_detections = client_info + cashier_info
+                all_detections = client_info  # Только детекции клиента
                 
                 app_rem = 0
                 dep_rem = 0
@@ -132,13 +137,22 @@ def run_detection_session(duration, model, ram_disk_path):
                            cv2.FONT_HERSHEY_SIMPLEX, 0.7, status_color, 2)
                 
                 # Доп. инфо
-                if app_rem > 0: cv2.putText(debug_frame, f'App timer: {app_rem}s', (10, 220), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 165, 255), 2)
-                if dep_rem > 0: cv2.putText(debug_frame, f'Dep timer: {dep_rem}s', (10, 250), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 165, 255), 2)
-                if cash_rem > 0: cv2.putText(debug_frame, f'Cashier wait: {cash_rem}s', (10, 280), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 165, 255), 2)
+                if app_rem > 0: 
+                    cv2.putText(debug_frame, f'App timer: {app_rem}s', (10, 220), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 165, 255), 2)
+                if dep_rem > 0: 
+                    cv2.putText(debug_frame, f'Dep timer: {dep_rem}s', (10, 250), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 165, 255), 2)
+                if cash_rem > 0: 
+                    cv2.putText(debug_frame, f'Cashier wait: {cash_rem}s', (10, 280), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 165, 255), 2)
+
+                # Статус кассира из БД
+                cashier_status = "PRESENT (DB)" if cashier_detected else "ABSENT (DB)"
+                cashier_color = (0, 255, 0) if cashier_detected else (0, 0, 255)
+                cv2.putText(debug_frame, f'Cashier: {cashier_status}', (10, 310), 
+                           cv2.FONT_HERSHEY_SIMPLEX, 0.7, cashier_color, 2)
 
                 # Время до конца сессии
                 secs_left = int(session_end_time - current_time)
-                cv2.putText(debug_frame, f'Session ends in: {secs_left//60}m {secs_left%60}s', (10, 310), 
+                cv2.putText(debug_frame, f'Session ends in: {secs_left//60}m {secs_left%60}s', (10, 340), 
                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (200, 200, 200), 1)
 
                 cv2.imshow('Client Monitoring', debug_frame)
@@ -186,7 +200,6 @@ def monitor_client_presence():
 
     os.environ['QT_QPA_PLATFORM'] = 'xcb'
     print("Запуск мониторинга наличия клиентов (Smart Schedule)...")
-    # [LOG REMOVED] ROI debug info
 
     try:
         while True:
@@ -211,7 +224,6 @@ def monitor_client_presence():
                 # Спим до начала смены
                 print(f"[{time.strftime('%H:%M:%S')}] Нерабочее время. Сон {delay/3600:.2f} ч.")
                 time.sleep(delay)
-                # [LOG REMOVED] "Пробуждение..."
                 
     except KeyboardInterrupt:
         print("\nОстановка пользователем")
