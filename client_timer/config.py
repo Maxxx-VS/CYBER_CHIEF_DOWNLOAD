@@ -31,23 +31,18 @@ DB_NAME = os.getenv('DB_NAME')
 DB_USER = os.getenv('DB_USER')
 DB_PASSWORD = os.getenv('DB_PASSWORD')
 
-# --- Настройки Мониторинга КАССИРА (Cashier) ---
-CONFIDENCE_THRESHOLD_CASSIR = float(os.getenv('CONFIDENCE_THRESHOLD_CASSIR'))
-SHOW_DETECTION_CASSIR = os.getenv('SHOW_DETECTION_CASSIR').lower() == 'true'
-CAPTURE_INTERVAL_CASSIR = int(os.getenv('CAPTURE_INTERVAL_CASSIR'))
-TIMEOUT_DURATION_CASSIR = int(os.getenv('TIMEOUT_DURATION_CASSIR'))
-ROI1_POINTS_STR = os.getenv('ROI_POINTS_CASSIR')
-
 # --- Настройки Мониторинга КЛИЕНТА (Client) ---
 CONFIDENCE_THRESHOLD_CLIENT = float(os.getenv('CONFIDENCE_THRESHOLD_CLIENT'))
 SHOW_DETECTION_CLIENT = os.getenv('SHOW_DETECTION_CLIENT').lower() == 'true'
 CAPTURE_INTERVAL_CLIENT = int(os.getenv('CAPTURE_INTERVAL_CLIENT'))
-ROI2_POINTS_STR = os.getenv('ROI_POINTS_CLIENT')
 
 # Таймеры логики клиента
 CLIENT_APPEARANCE_TIMER = int(os.getenv('CLIENT_APPEARANCE_TIMER'))
 CLIENT_DEPARTURE_TIMER = int(os.getenv('CLIENT_DEPARTURE_TIMER'))
 CASHIER_WAIT_TIMER = int(os.getenv('CASHIER_WAIT_TIMER'))
+
+# ROI для клиента
+ROI_POINTS_CLIENT_STR = os.getenv('ROI_POINTS_CLIENT')
 
 # --- Глобальные переменные состояния ---
 WORK_SCHEDULE = {
@@ -70,26 +65,21 @@ def parse_roi_points(roi_string):
     except (ValueError, SyntaxError):
         return None
 
-ROI1 = parse_roi_points(ROI1_POINTS_STR)
-ROI2 = parse_roi_points(ROI2_POINTS_STR)
+ROI_CLIENT = parse_roi_points(ROI_POINTS_CLIENT_STR)
 
-# Список всех ROI: [0] - Кассир, [1] - Клиент
+# Список всех ROI: теперь только для клиента
 ROI_LIST = []
-if ROI1 is not None:
-    ROI_LIST.append(ROI1)
-if ROI2 is not None:
-    ROI_LIST.append(ROI2)
+if ROI_CLIENT is not None:
+    ROI_LIST.append(ROI_CLIENT)
 
 if not ROI_LIST:
     ROI_LIST = None
     print("Предупреждение: Не заданы ROI. Используется весь кадр.")
 
-# Для обратной совместимости с client_timer.py (если не менять имена переменных в скрипте)
-# Но мы обновим скрипт, чтобы использовать специфичные переменные.
-CONFIDENCE_THRESHOLD = CONFIDENCE_THRESHOLD_CASSIR 
-SHOW_DETECTION = SHOW_DETECTION_CASSIR
-CAPTURE_INTERVAL = CAPTURE_INTERVAL_CASSIR
-TIMEOUT_DURATION = TIMEOUT_DURATION_CASSIR
+# Для обратной совместимости с client_monitoring.py
+CONFIDENCE_THRESHOLD = CONFIDENCE_THRESHOLD_CLIENT 
+SHOW_DETECTION = SHOW_DETECTION_CLIENT
+CAPTURE_INTERVAL = CAPTURE_INTERVAL_CLIENT
 
 if __name__ == "__main__":
     print("\nТекущие настройки:")
