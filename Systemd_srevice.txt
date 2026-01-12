@@ -93,7 +93,7 @@ Type=simple
 User=sm
 WorkingDirectory=/home/sm/cyber_chief/client_timer
 Environment="PYTHONPATH=/home/sm/cyber_chief"
-ExecStart=/home/sm/cyber_chief/requirements/venv/bin/python client_timer.py
+ExecStart=/home/sm/cyber_chief/requirements/venv/bin/python client_monitoring.py
 Restart=always
 RestartSec=5
 
