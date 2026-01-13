@@ -6,7 +6,7 @@ import shutil
 from config import SHOW_DETECTION, CAPTURE_INTERVAL, RAM_DISK_PATH, TIMEOUT_DURATION, ROI_TABLE
 from database import check_database_connection, save_work_session_to_db, get_gmt_offset
 from video_stream import VideoStream
-from detection import load_model, load_hat_glove_model, detect_person, detect_hat_glove, draw_detections, check_violation, save_violation_images, play_warning_sound
+from detection import load_model, load_hat_glove_model, detect_person, detect_hat_glove, draw_detections, check_violation, save_violation_images, play_warning_sound, reset_violation_counter
 from schedule import should_monitoring_be_active
 from sftp_client import SFTPUploader
 
@@ -90,7 +90,7 @@ def monitor_chef_work_time():
             if person_detected:
                 hat_glove_info, glove_detections = detect_hat_glove(frame, model_hat_glove, person_bboxes)
             
-            # Проверка нарушений (если задан ROI Table)
+            # Проверка нарушений
             violations = []
             if ROI_TABLE is not None and person_detected:
                 violations = check_violation(person_info, glove_detections, frame, timestamp)
@@ -98,6 +98,10 @@ def monitor_chef_work_time():
                 # Сохраняем фото нарушения и воспроизводим звук, если достигнут порог
                 if violations:
                     save_violation_images(frame, violations)
+            else:
+                # ИЗМЕНЕНИЕ: Если не выполняются условия для проверки нарушений
+                # (нет ROI_TABLE или нет людей) - сбрасываем счетчик
+                reset_violation_counter()
             
             current_time = time.time()
             
