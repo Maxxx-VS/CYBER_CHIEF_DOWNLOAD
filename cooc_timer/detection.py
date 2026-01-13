@@ -126,6 +126,8 @@ def detect_hat_glove(frame, model, person_bboxes, confidence_threshold=HAT_GLOVE
 def check_violation(person_info, glove_detections, frame, timestamp):
     global consecutive_violations_count
     violations = []
+    
+    # Проверяем каждого человека в ROI_TABLE
     for person in person_info:
         if person.get('intersects_table', False):
             px1, py1, px2, py2 = person['bbox']
@@ -138,11 +140,14 @@ def check_violation(person_info, glove_detections, frame, timestamp):
             if not has_glove:
                 violations.append({'person_bbox': person['bbox'], 'timestamp': timestamp, 'person_confidence': person['confidence']})
     
+    # ИЗМЕНЕНИЕ: Если есть нарушения - увеличиваем счетчик
     if violations:
         consecutive_violations_count += 1
         # print(f"[Violation] Consecutive: {consecutive_violations_count}/{COUNT_VIOLATIONS}")
     else:
+        # ИЗМЕНЕНИЕ: Если на этом кадре нет нарушений - сбрасываем счетчик
         consecutive_violations_count = 0
+    
     return violations
 
 def play_warning_sound():
@@ -237,3 +242,8 @@ def draw_detections(frame, person_info, hg_info, person_detected, roi=ROI, roi_t
 
     cv2.putText(frame, f"Violations: {consecutive_violations_count}/{COUNT_VIOLATIONS}", (10, 400), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
     return frame
+
+def reset_violation_counter():
+    """Сбрасывает счетчик последовательных нарушений"""
+    global consecutive_violations_count
+    consecutive_violations_count = 0
