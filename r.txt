@@ -2,6 +2,29 @@
 [h264 @ 0x23a90fc0] left block unavailable for requested intra4x4 mode -1
 [h264 @ 0x23a90fc0] error while decoding MB 0 7, bytestream 163633
 [h264 @ 0x23a908e0] error while decoding MB 41 42, bytestream -10
+[h264 @ 0x7fff5c0d17f0] left block unavailable for requested intra4x4 mode -1
+[h264 @ 0x7fff5c0d17f0] error while decoding MB 0 59, bytestream 39195
+[h264 @ 0x7fff5c0e3ab0] error while decoding MB 27 25, bytestream -7
+[h264 @ 0x7fff540f5d60] left block unavailable for requested intra mode
+[h264 @ 0x7fff540f5d60] error while decoding MB 0 5, bytestream 290674
+[h264 @ 0x7fff5c0d17f0] left block unavailable for requested intra4x4 mode -1
+[h264 @ 0x7fff5c0d17f0] error while decoding MB 0 3, bytestream 181432
+[h264 @ 0x7fff540e3b20] left block unavailable for requested intra mode
+[h264 @ 0x7fff540e3b20] error while decoding MB 0 28, bytestream 8828
+[h264 @ 0x7fff540f5d60] left block unavailable for requested intra4x4 mode -1
+[h264 @ 0x7fff540f5d60] error while decoding MB 0 16, bytestream 60790
+[h264 @ 0x7fff5c0d17f0] left block unavailable for requested intra4x4 mode -1
+[h264 @ 0x7fff5c0d17f0] error while decoding MB 0 24, bytestream 788
+[h264 @ 0x7fff5c0d17f0] error while decoding MB 97 62, bytestream -6
+[h264 @ 0x7fff5c104570] left block unavailable for requested intra mode
+[h264 @ 0x7fff5c104570] error while decoding MB 0 5, bytestream 11634
+[h264 @ 0x7fff5c0f5cf0] left block unavailable for requested intra4x4 mode -1
+[h264 @ 0x7fff5c0f5cf0] error while decoding MB 0 33, bytestream 32519
+[h264 @ 0x7fff5c0f5cf0] error while decoding MB 96 24, bytestream -5
+[h264 @ 0x7fff540d18d0] left block unavailable for requested intra4x4 mode -1
+[h264 @ 0x7fff540d18d0] error while decoding MB 0 4, bytestream 9596
+[h264 @ 0x7fff540d18d0] error while decoding MB 27 40, bytestream -5
+
 
 [ WARN:0@41877.741] global cap_ffmpeg_impl.hpp:453 _opencv_ffmpeg_interrupt_callback Stream timeout triggered after 30032.835870 ms
 [ WARN:0@41907.783] global cap_ffmpeg_impl.hpp:453 _opencv_ffmpeg_interrupt_callback Stream timeout triggered after 30032.635058 ms
