@@ -1,20 +1,22 @@
 import os
 import time
+import tempfile
 from config import WORK_SCHEDULE
 
-def setup_ram_disk():
+def setup_ram_disk(prefix="monitor"):
     """
-    Настройка RAM-диска в оперативной памяти
+    Настройка временного каталога в памяти с префиксом для разделения потоков
     """
-    ram_disk_path = "/dev/shm/cashier_monitor"
-    if not os.path.exists(ram_disk_path):
-        try:
-            os.makedirs(ram_disk_path)
-        except OSError:
-            # Fallback для систем без /dev/shm (например, Mac/Windows)
-            ram_disk_path = "temp_frames"
-            os.makedirs(ram_disk_path, exist_ok=True)
+    # Пытаемся использовать /dev/shm для Linux
+    if os.path.exists("/dev/shm"):
+        ram_disk_path = f"/dev/shm/{prefix}_cashier_monitor_{os.getpid()}_{int(time.time())}"
     else:
+        # Fallback для других систем
+        ram_disk_path = os.path.join(tempfile.gettempdir(), f"{prefix}_cashier_monitor_{os.getpid()}_{int(time.time())}")
+    
+    try:
+        os.makedirs(ram_disk_path, exist_ok=True)
+        # Очищаем каталог на всякий случай
         for filename in os.listdir(ram_disk_path):
             file_path = os.path.join(ram_disk_path, filename)
             try:
@@ -22,6 +24,12 @@ def setup_ram_disk():
                     os.unlink(file_path)
             except Exception as e:
                 print(f"Ошибка при удалении {file_path}: {e}")
+    except Exception as e:
+        print(f"Ошибка при создании временного каталога: {e}")
+        # Последний fallback
+        ram_disk_path = f"./temp_{prefix}_{os.getpid()}"
+        os.makedirs(ram_disk_path, exist_ok=True)
+    
     return ram_disk_path
 
 def calculate_next_schedule_change():
@@ -30,16 +38,18 @@ def calculate_next_schedule_change():
     Возвращает: (is_active_now, seconds_until_next_change)
     """
     if not WORK_SCHEDULE['start_time'] or not WORK_SCHEDULE['end_time']:
-        return False, 60 # Если расписания нет, проверяем через минуту
+        return False, 60  # Если расписания нет, проверяем через минуту
     
     try:
+        # Получаем текущее время в GMT
         current_time_gmt = time.gmtime()
         gmt_offset = WORK_SCHEDULE.get('gmt_offset', 0)
         
-        # Текущее время в секундах от начала дня
-        current_hour = (current_time_gmt.tm_hour + gmt_offset + 24) % 24
+        # Текущее время в секундах от начала дня с учетом GMT offset
+        current_hour = (current_time_gmt.tm_hour + gmt_offset) % 24
         current_total_seconds = current_hour * 3600 + current_time_gmt.tm_min * 60 + current_time_gmt.tm_sec
         
+        # Парсим время начала и окончания работы
         start_h, start_m = map(int, WORK_SCHEDULE['start_time'].split(':'))
         end_h, end_m = map(int, WORK_SCHEDULE['end_time'].split(':'))
         
@@ -50,7 +60,7 @@ def calculate_next_schedule_change():
         seconds_until_change = 0
         
         if start_total_seconds <= end_total_seconds:
-            # Дневная смена
+            # Дневная смена (в течение одного дня)
             if start_total_seconds <= current_total_seconds < end_total_seconds:
                 is_active_now = True
                 seconds_until_change = end_total_seconds - current_total_seconds
@@ -61,7 +71,7 @@ def calculate_next_schedule_change():
                 is_active_now = False
                 seconds_until_change = (86400 - current_total_seconds) + start_total_seconds
         else:
-            # Ночная смена
+            # Ночная смена (переход через полночь)
             if current_total_seconds >= start_total_seconds or current_total_seconds < end_total_seconds:
                 is_active_now = True
                 if current_total_seconds >= start_total_seconds:
