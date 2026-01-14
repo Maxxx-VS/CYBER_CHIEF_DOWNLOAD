@@ -160,3 +160,10 @@ sudo systemctl daemon-reload
 
 # Посмотреть ошибки:
 # journalctl -u cyber_scale -p err -b
+
+
+# Перезапустить все сервисы Cyber Chief
+sudo systemctl restart cyber_casir cyber_client cyber_cooc cyber_monitor cyber_scale
+
+# Проверить статус
+sudo systemctl status cyber_*.service
