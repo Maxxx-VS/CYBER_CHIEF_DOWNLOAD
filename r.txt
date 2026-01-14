@@ -2,3 +2,6 @@
 [h264 @ 0x23a90fc0] left block unavailable for requested intra4x4 mode -1
 [h264 @ 0x23a90fc0] error while decoding MB 0 7, bytestream 163633
 [h264 @ 0x23a908e0] error while decoding MB 41 42, bytestream -10
+
+[ WARN:0@41877.741] global cap_ffmpeg_impl.hpp:453 _opencv_ffmpeg_interrupt_callback Stream timeout triggered after 30032.835870 ms
+[ WARN:0@41907.783] global cap_ffmpeg_impl.hpp:453 _opencv_ffmpeg_interrupt_callback Stream timeout triggered after 30032.635058 ms
