@@ -28,3 +28,332 @@
 
 [ WARN:0@41877.741] global cap_ffmpeg_impl.hpp:453 _opencv_ffmpeg_interrupt_callback Stream timeout triggered after 30032.835870 ms
 [ WARN:0@41907.783] global cap_ffmpeg_impl.hpp:453 _opencv_ffmpeg_interrupt_callback Stream timeout triggered after 30032.635058 ms
+
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffed4004020] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[tcp @ 0x7ffecc003eb0] Connection to tcp://77.221.220.232:553?timeout=0 failed: Сеть недоступна
+Ошибка инициализации камеры: Ошибка: Не удалось открыть RTSP поток rtsp://admin:s255636S@77.221.220.232:553/live/main
+[h264 @ 0x7ffecc0e3d00] left block unavailable for requested intra4x4 mode -1
+[h264 @ 0x7ffecc0e3d00] error while decoding MB 0 6, bytestream 18564
+[h264 @ 0x7ffeb02a3510] error while decoding MB 60 63, bytestream -6
+[h264 @ 0x7ffecc0e3d00] error while decoding MB 94 37, bytestream -5
+[h264 @ 0x7ffecc0d18d0] left block unavailable for requested intra4x4 mode -1
+[h264 @ 0x7ffecc0d18d0] error while decoding MB 0 12, bytestream 14691
+[h264 @ 0x7ffecc104400] error while decoding MB 95 11, bytestream -6
+[h264 @ 0x7ffecc0d18d0] left block unavailable for requested intra4x4 mode -1
+[h264 @ 0x7ffecc0d18d0] error while decoding MB 0 49, bytestream 76920
+[h264 @ 0x7ffecc0e3d00] left block unavailable for requested intra4x4 mode -1
+[h264 @ 0x7ffecc0e3d00] error while decoding MB 0 14, bytestream 69417
+[h264 @ 0x7ffeb02a3510] error while decoding MB 114 8, bytestream -5
+[h264 @ 0x7ffecc0e3d00] left block unavailable for requested intra4x4 mode -1
+[h264 @ 0x7ffecc0e3d00] error while decoding MB 0 4, bytestream 285710
+[h264 @ 0x7ffecc0e3d00] error while decoding MB 91 16, bytestream -5
+[h264 @ 0x7ffecc104400] error while decoding MB 64 16, bytestream -14
+[h264 @ 0x7ffecc0d18d0] left block unavailable for requested intra4x4 mode -1
+[h264 @ 0x7ffecc0d18d0] error while decoding MB 0 3, bytestream 34258
+[h264 @ 0x7ffecc0d18d0] error while decoding MB 0 49, bytestream -6
+[h264 @ 0x7ffecc104400] error while decoding MB 62 59, bytestream -6
+[h264 @ 0x7ffed40e3ab0] error while decoding MB 104 24, bytestream -12
+[h264 @ 0x7ffed40e3ab0] error while decoding MB 62 59, bytestream -6
+[h264 @ 0x7ffed4104570] left block unavailable for requested intra mode
+[h264 @ 0x7ffed4104570] error while decoding MB 0 44, bytestream 32443
+[h264 @ 0x7ffed40d17f0] left block unavailable for requested intra4x4 mode -1
+[h264 @ 0x7ffed40d17f0] error while decoding MB 0 40, bytestream 60701
+[h264 @ 0x7ffec82a7100] error while decoding MB 30 3, bytestream -6
+[h264 @ 0x7ffed40d17f0] left block unavailable for requested intra4x4 mode -1
+[h264 @ 0x7ffed40d17f0] error while decoding MB 0 28, bytestream 173309
+
