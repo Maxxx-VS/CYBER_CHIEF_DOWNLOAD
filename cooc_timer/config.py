@@ -61,6 +61,11 @@ BUFFER_SIZE = int(os.getenv('CAMERA_BUFFER_SIZE'))
 RECONNECT_TIMEOUT = int(os.getenv('CAMERA_RECONNECT_TIMEOUT'))
 MAX_RECONNECT_ATTEMPTS = int(os.getenv('CAMERA_MAX_RECONNECT_ATTEMPTS'))
 
+# --- Параметры ошибок декодирования ---
+DECODE_ERROR_THRESHOLD = int(os.getenv('DECODE_ERROR_THRESHOLD', '10'))
+DECODE_ERROR_WINDOW = int(os.getenv('DECODE_ERROR_WINDOW', '180'))
+RECONNECT_ON_DECODE_ERROR = os.getenv('RECONNECT_ON_DECODE_ERROR', 'True').lower() == 'true'
+
 # --- Настройки БД ---
 DB_USER = os.getenv('DB_USER')
 DB_PASSWORD = os.getenv('DB_PASSWORD')

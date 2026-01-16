@@ -20,6 +20,7 @@ is_sound_playing = False
 sound_lock = threading.Lock()
 
 def is_point_in_polygon(point, polygon):
+    """Проверка, находится ли точка внутри полигона"""
     x, y = point
     n = len(polygon)
     inside = False
@@ -37,22 +38,38 @@ def is_point_in_polygon(point, polygon):
     return inside
 
 def bbox_intersects_polygon(bbox, polygon):
-    if polygon is None: return False
+    """Проверка пересечения bounding box с полигоном"""
+    if polygon is None: 
+        return False
     x1, y1, x2, y2 = bbox
     points = [(x1, y1), (x2, y1), (x2, y2), (x1, y2), ((x1+x2)//2, (y1+y2)//2)]
     for p in points:
-        if is_point_in_polygon(p, polygon): return True
+        if is_point_in_polygon(p, polygon): 
+            return True
     return False
 
 def get_polygon_bounding_rect(polygon):
+    """Получение ограничивающего прямоугольника для полигона"""
     xs = [p[0] for p in polygon]
     ys = [p[1] for p in polygon]
     return (max(0, min(xs)), max(0, min(ys)), min(9999, max(xs)), min(9999, max(ys)))
 
 def detect_person(frame, model, confidence_threshold=CONFIDENCE_THRESHOLD, roi=ROI, roi_table=ROI_TABLE):
+    """Детекция людей в кадре"""
     roi_rect = get_polygon_bounding_rect(roi)
     x1_rect, y1_rect, x2_rect, y2_rect = roi_rect
+    
+    # Проверка границ ROI
+    if (x1_rect >= x2_rect or y1_rect >= y2_rect or 
+        x2_rect > frame.shape[1] or y2_rect > frame.shape[0]):
+        return False, 0.0, [], []
+    
     roi_frame = frame[y1_rect:y2_rect, x1_rect:x2_rect]
+    
+    # Проверка, что ROI не пустой
+    if roi_frame.size == 0:
+        return False, 0.0, [], []
+        
     results = model(roi_frame, verbose=False)
     
     person_count = 0
@@ -78,11 +95,18 @@ def detect_person(frame, model, confidence_threshold=CONFIDENCE_THRESHOLD, roi=R
                         bbox = (x1_f, y1_f, x2_f, y2_f)
                         person_bboxes.append(bbox)
                         inter = False
-                        if roi_table: inter = bbox_intersects_polygon(bbox, roi_table)
-                        detection_info.append({'bbox': bbox, 'confidence': conf, 'class': 'person', 'intersects_table': inter})
+                        if roi_table: 
+                            inter = bbox_intersects_polygon(bbox, roi_table)
+                        detection_info.append({
+                            'bbox': bbox, 
+                            'confidence': conf, 
+                            'class': 'person', 
+                            'intersects_table': inter
+                        })
     return person_count > 0, max_confidence, detection_info, person_bboxes
 
 def load_model():
+    """Загрузка модели детекции людей"""
     try:
         model = YOLO(MODEL_PATH, task='detect')
         print(f"Model loaded: {MODEL_PATH}")
@@ -92,6 +116,7 @@ def load_model():
         return None
 
 def load_hat_glove_model():
+    """Загрузка модели детекции средств защиты"""
     try:
         model = YOLO(HAT_GLOVE_MODEL_PATH, task='detect')
         print(f"PPE Model loaded: {HAT_GLOVE_MODEL_PATH}")
@@ -101,10 +126,14 @@ def load_hat_glove_model():
         return None
 
 def detect_hat_glove(frame, model, person_bboxes, confidence_threshold=HAT_GLOVE_CONFIDENCE_THRESHOLD):
-    if model is None: return [], []
+    """Детекция шлемов и перчаток"""
+    if model is None: 
+        return [], []
+        
     results = model.predict(frame, conf=confidence_threshold, classes=[0, 1], verbose=False)
     hg_dets = []
     g_dets = []
+    
     if results and results[0].boxes is not None:
         for box in results[0].boxes:
             cls = int(box.cls[0])
@@ -118,12 +147,18 @@ def detect_hat_glove(frame, model, person_bboxes, confidence_threshold=HAT_GLOVE
                     in_person = True
                     break
             if in_person:
-                info = {'bbox': (x1, y1, x2, y2), 'confidence': conf, 'class': HAT_GLOVE_CLASSES.get(cls, 'unknown')}
+                info = {
+                    'bbox': (x1, y1, x2, y2), 
+                    'confidence': conf, 
+                    'class': HAT_GLOVE_CLASSES.get(cls, 'unknown')
+                }
                 hg_dets.append(info)
-                if cls == 1: g_dets.append(info)
+                if cls == 1: 
+                    g_dets.append(info)
     return hg_dets, g_dets
 
 def check_violation(person_info, glove_detections, frame, timestamp):
+    """Проверка нарушений (отсутствие перчаток)"""
     global consecutive_violations_count
     violations = []
     
@@ -132,47 +167,54 @@ def check_violation(person_info, glove_detections, frame, timestamp):
         if person.get('intersects_table', False):
             px1, py1, px2, py2 = person['bbox']
             has_glove = False
+            
             for glove in glove_detections:
                 gx1, gy1, gx2, gy2 = glove['bbox']
+                # Проверка пересечения bounding boxes
                 if (gx1 < px2 and gx2 > px1 and gy1 < py2 and gy2 > py1):
                     has_glove = True
                     break
+                    
             if not has_glove:
-                violations.append({'person_bbox': person['bbox'], 'timestamp': timestamp, 'person_confidence': person['confidence']})
+                violations.append({
+                    'person_bbox': person['bbox'], 
+                    'timestamp': timestamp, 
+                    'person_confidence': person['confidence']
+                })
     
-    # ИЗМЕНЕНИЕ: Если есть нарушения - увеличиваем счетчик
+    # Обновление счетчика нарушений
     if violations:
         consecutive_violations_count += 1
-        # print(f"[Violation] Consecutive: {consecutive_violations_count}/{COUNT_VIOLATIONS}")
+        print(f"[Violation] Consecutive: {consecutive_violations_count}/{COUNT_VIOLATIONS}")
     else:
-        # ИЗМЕНЕНИЕ: Если на этом кадре нет нарушений - сбрасываем счетчик
+        # Если на этом кадре нет нарушений - сбрасываем счетчик
         consecutive_violations_count = 0
     
     return violations
 
 def play_warning_sound():
-    """
-    Воспроизводит звук предупреждения.
-    """
+    """Воспроизведение звука предупреждения"""
     global is_sound_playing
-    sound_path = SOUND_PATH_WARNING
     
-    if not sound_path or not os.path.exists(sound_path):
-        print(f"Warning sound file not found: {sound_path}")
+    if not SOUND_PATH_WARNING or not os.path.exists(SOUND_PATH_WARNING):
+        print(f"Warning sound file not found: {SOUND_PATH_WARNING}")
         return
     
     with sound_lock:
         if is_sound_playing:
             return
         is_sound_playing = True
-        
+    
     def play():
         try:
             subprocess.run(
-                ['mpg123', '-q', sound_path],
+                ['mpg123', '-q', SOUND_PATH_WARNING],
                 stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL
+                stderr=subprocess.DEVNULL,
+                timeout=10
             )
+        except subprocess.TimeoutExpired:
+            print("Warning sound playback timeout")
         except Exception as e:
             print(f"Error playing warning sound: {e}")
         finally:
@@ -183,19 +225,21 @@ def play_warning_sound():
     threading.Thread(target=play, daemon=True).start()
 
 def save_violation_images(frame, violations):
-    """
-    Сохраняет изображения. Если SFTP недоступен - сохраняет в локальный буфер.
-    """
+    """Сохранение изображений нарушений"""
     global consecutive_violations_count
     
     if consecutive_violations_count >= COUNT_VIOLATIONS:
-        # print(f"[ATTENTION] Threshold reached ({COUNT_VIOLATIONS}). Saving evidence.")
+        print(f"[ATTENTION] Threshold reached ({COUNT_VIOLATIONS}). Saving evidence.")
         
         uploader = SFTPUploader()
         
+        # Создание директории RAM диска при необходимости
         if not os.path.exists(RAM_DISK_PATH):
-            try: os.makedirs(RAM_DISK_PATH)
-            except: pass
+            try: 
+                os.makedirs(RAM_DISK_PATH, exist_ok=True)
+            except Exception as e:
+                print(f"Error creating RAM disk directory: {e}")
+                return
         
         if violations:
             violation = violations[0]
@@ -204,16 +248,25 @@ def save_violation_images(frame, violations):
             
             violation_frame = frame.copy()
             x1, y1, x2, y2 = person_bbox
+            
+            # Рисуем bounding box нарушителя
             cv2.rectangle(violation_frame, (x1, y1), (x2, y2), (0, 0, 255), 3)
-            cv2.putText(violation_frame, f'VIOLATION: No gloves ({consecutive_violations_count})', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
+            
+            # Добавляем текст
+            cv2.putText(violation_frame, f'VIOLATION: No gloves ({consecutive_violations_count})', 
+                       (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
+            cv2.putText(violation_frame, f'Point ID: {ID_POINT}', 
+                       (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
             
             dt_object = datetime.fromtimestamp(timestamp)
-            filename = f"{ID_POINT}_VIOLATION_{dt_object.strftime('%Y-%m-%d_%H:%M:%S')}.jpeg"
+            filename = f"{ID_POINT}_VIOLATION_{dt_object.strftime('%Y-%m-%d_%H-%M-%S')}.jpeg"
             local_path = os.path.join(RAM_DISK_PATH, filename)
             
             try:
                 if cv2.imwrite(local_path, violation_frame):
-                    # Попытка загрузки
+                    print(f"Violation image saved: {local_path}")
+                    
+                    # Попытка загрузки на SFTP
                     if not uploader.upload_file(local_path, filename):
                         # Если не удалось загрузить -> сохраняем в оффлайн буфер
                         print("SFTP upload failed. Saving to offline buffer.")
@@ -224,23 +277,47 @@ def save_violation_images(frame, violations):
                     
                     # Сброс счетчика после реакции
                     consecutive_violations_count = 0
+                else:
+                    print(f"Failed to save image: {local_path}")
             except Exception as e:
                 print(f"Error saving violation: {e}")
 
 def draw_detections(frame, person_info, hg_info, person_detected, roi=ROI, roi_table=ROI_TABLE, violations=None):
-    if roi: cv2.polylines(frame, [np.array(roi, dtype=np.int32)], True, (255,255,0), 2)
-    if roi_table: cv2.polylines(frame, [np.array(roi_table, dtype=np.int32)], True, (0,255,255), 2)
+    """Отрисовка детекций на кадре"""
+    # Рисуем ROI
+    if roi: 
+        cv2.polylines(frame, [np.array(roi, dtype=np.int32)], True, (255,255,0), 2)
+    if roi_table: 
+        cv2.polylines(frame, [np.array(roi_table, dtype=np.int32)], True, (0,255,255), 2)
     
+    # Рисуем bounding boxes людей
     for d in person_info:
         x1, y1, x2, y2 = d['bbox']
-        color = (0,0,255) if (violations and any(v['person_bbox']==d['bbox'] for v in violations)) else (0,255,0)
+        # Красный цвет для нарушителей, зеленый для остальных
+        if violations and any(v['person_bbox'] == d['bbox'] for v in violations):
+            color = (0, 0, 255)  # Красный
+        else:
+            color = (0, 255, 0)  # Зеленый
         cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
+        
+        # Добавляем confidence score
+        cv2.putText(frame, f"{d['confidence']:.2f}", 
+                   (x1, y1-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
     
+    # Рисуем bounding boxes средств защиты
     for d in hg_info:
         x1, y1, x2, y2 = d['bbox']
-        cv2.rectangle(frame, (x1, y1), (x2, y2), (255,0,0), 2)
+        color = (255, 0, 0)  # Синий для средств защиты
+        cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
+        
+        # Добавляем название класса
+        cv2.putText(frame, f"{d['class']} {d['confidence']:.2f}", 
+                   (x1, y1-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
-    cv2.putText(frame, f"Violations: {consecutive_violations_count}/{COUNT_VIOLATIONS}", (10, 400), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
+    # Добавляем счетчик нарушений
+    cv2.putText(frame, f"Violations: {consecutive_violations_count}/{COUNT_VIOLATIONS}", 
+               (10, 400), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
+    
     return frame
 
 def reset_violation_counter():

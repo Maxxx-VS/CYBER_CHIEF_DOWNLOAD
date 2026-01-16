@@ -6,7 +6,7 @@ import shutil
 from config import SHOW_DETECTION, CAPTURE_INTERVAL, RAM_DISK_PATH, TIMEOUT_DURATION, ROI_TABLE
 from database import check_database_connection, save_work_session_to_db, get_gmt_offset
 from video_stream import VideoStream
-from detection import load_model, load_hat_glove_model, detect_person, detect_hat_glove, draw_detections, check_violation, save_violation_images, play_warning_sound, reset_violation_counter
+from detection import load_model, load_hat_glove_model, detect_person, detect_hat_glove, draw_detections, check_violation, save_violation_images, reset_violation_counter
 from schedule import should_monitoring_be_active
 from sftp_client import SFTPUploader
 
@@ -15,6 +15,7 @@ def setup_ram_disk():
     if not os.path.exists(RAM_DISK_PATH):
         os.makedirs(RAM_DISK_PATH)
     else:
+        # Очистка только файлов, оставляем директорию
         for filename in os.listdir(RAM_DISK_PATH):
             file_path = os.path.join(RAM_DISK_PATH, filename)
             try:
@@ -44,6 +45,10 @@ def monitor_chef_work_time():
     # Загрузка моделей
     model_person = load_model()
     model_hat_glove = load_hat_glove_model()
+    
+    if model_person is None:
+        print("КРИТИЧЕСКАЯ ОШИБКА: Не удалось загрузить модель детекции людей!")
+        return
     
     video_stream = VideoStream().start()
     time.sleep(2.0) # Разогрев камеры
@@ -99,7 +104,7 @@ def monitor_chef_work_time():
                 if violations:
                     save_violation_images(frame, violations)
             else:
-                # ИЗМЕНЕНИЕ: Если не выполняются условия для проверки нарушений
+                # Если не выполняются условия для проверки нарушений
                 # (нет ROI_TABLE или нет людей) - сбрасываем счетчик
                 reset_violation_counter()
             
@@ -111,7 +116,7 @@ def monitor_chef_work_time():
                 if not is_working:
                     work_session_start = current_time
                     is_working = True
-                    # print(f"[{time.strftime('%H:%M:%S')}] Начало рабочей сессии")
+                    print(f"[{time.strftime('%H:%M:%S')}] Начало рабочей сессии")
             
             elif is_working and last_detection_time is not None:
                 # Проверка таймаута
@@ -120,6 +125,7 @@ def monitor_chef_work_time():
                     if db_connection_ok:
                         save_work_session_to_db(work_session_start, last_detection_time, session_duration)
                     
+                    print(f"[{time.strftime('%H:%M:%S')}] Конец рабочей сессии. Длительность: {session_duration} сек")
                     is_working = False
                     work_session_start = None
                     last_detection_time = None
@@ -128,9 +134,17 @@ def monitor_chef_work_time():
             if SHOW_DETECTION:
                 debug_frame = draw_detections(frame.copy(), person_info, hat_glove_info, person_detected, 
                                              roi_table=ROI_TABLE, violations=violations)
+                
+                # Добавляем информацию о статусе
+                status_text = "РАБОТАЕТ" if person_detected else "НЕ РАБОТАЕТ"
+                status_color = (0, 255, 0) if person_detected else (0, 0, 255)
+                cv2.putText(debug_frame, f"Статус: {status_text}", 
+                           (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, status_color, 2)
+                
                 if is_working and work_session_start:
-                    cv2.putText(debug_frame, f"Session: {int(current_time - work_session_start)}s", 
-                               (10, 230), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+                    session_time = int(current_time - work_session_start)
+                    cv2.putText(debug_frame, f"Сессия: {session_time} сек", 
+                               (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
                 
                 cv2.imshow('Chef Detection Debug', debug_frame)
                 if (cv2.waitKey(1) & 0xFF) == ord('q'):
@@ -144,23 +158,36 @@ def monitor_chef_work_time():
             
             # Соблюдение интервала захвата
             processing_time = time.time() - iteration_start
-            time.sleep(max(0, CAPTURE_INTERVAL - processing_time))
+            sleep_time = max(0, CAPTURE_INTERVAL - processing_time)
+            time.sleep(sleep_time)
             
     except KeyboardInterrupt:
         print("\nОстановка пользователем")
     except Exception as e:
         print(f"Критическая ошибка: {e}")
+        import traceback
+        traceback.print_exc()
     finally:
         # Сохранение незавершенной сессии
         if is_working and work_session_start and last_detection_time:
-             if db_connection_ok:
-                save_work_session_to_db(work_session_start, last_detection_time, int(last_detection_time - work_session_start))
+            session_duration = int(last_detection_time - work_session_start)
+            if db_connection_ok:
+                save_work_session_to_db(work_session_start, last_detection_time, session_duration)
+            print(f"Завершена незаконченная сессия. Длительность: {session_duration} сек")
         
         # Очистка
         try:
-            shutil.rmtree(ram_disk_path)
-        except OSError:
-            pass
+            if os.path.exists(ram_disk_path):
+                for filename in os.listdir(ram_disk_path):
+                    file_path = os.path.join(ram_disk_path, filename)
+                    try:
+                        if os.path.isfile(file_path):
+                            os.unlink(file_path)
+                    except Exception:
+                        pass
+        except Exception as e:
+            print(f"Ошибка при очистке RAM диска: {e}")
+            
         video_stream.release()
         if SHOW_DETECTION:
             cv2.destroyAllWindows()

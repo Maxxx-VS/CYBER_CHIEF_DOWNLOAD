@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Float
+from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import DeclarativeBase
 
 class Base(DeclarativeBase):
@@ -14,10 +14,6 @@ class TradePoint(Base):
 class ChefWork(Base):
     """Модель таблицы CV_работа_повара"""
     __tablename__ = 'CV_работа_повара'
-    
-    # УДАЛЕНО: id = Column(Integer, primary_key=True, autoincrement=True) 
-    # В таблице БД нет столбца id. 
-    # Для SQLAlchemy указываем составной первичный ключ из существующих полей:
     
     id_точки = Column(Integer, primary_key=True)
     Время_нач_работы = Column(DateTime, primary_key=True)
