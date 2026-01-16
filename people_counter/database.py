@@ -1,10 +1,7 @@
-# database.py
-
 import time
 import sqlite3
 import os
 from datetime import datetime
-from sqlalchemy import text
 from config import ID_POINT
 import schedule_checker
 from models import PeopleCounter, get_db_session
@@ -29,6 +26,7 @@ def init_local_db():
         ''')
         conn.commit()
         conn.close()
+        print("Локальная БД инициализирована")
     except Exception as e:
         print(f"Ошибка инициализации локальной БД: {e}")
 
@@ -44,8 +42,6 @@ def save_to_local_db(point_id, record_datetime, record_date, record_hour, count)
         ''', (point_id, str(record_datetime), str(record_date), record_hour, count))
         conn.commit()
         conn.close()
-        # Убрали вывод успешного сохранения в локальный буфер, чтобы не спамить в лог
-        # print(f"[OFFLINE] Данные сохранены локально: {count} чел.")
     except Exception as e:
         print(f"Критическая ошибка локального сохранения: {e}")
 
@@ -61,7 +57,8 @@ def sync_offline_data():
         cursor.execute('SELECT * FROM people_count_buffer')
         rows = cursor.fetchall()
         conn.close()
-    except Exception:
+    except Exception as e:
+        print(f"Ошибка чтения локальной БД: {e}")
         return
 
     if not rows:
@@ -71,7 +68,7 @@ def sync_offline_data():
     
     session = get_db_session()
     if not session:
-        return # Все еще нет связи
+        return  # Все еще нет связи
 
     ids_to_delete = []
     try:
@@ -99,7 +96,8 @@ def sync_offline_data():
         if ids_to_delete:
             conn = sqlite3.connect(LOCAL_DB_PATH)
             cursor = conn.cursor()
-            cursor.execute(f'DELETE FROM people_count_buffer WHERE id IN ({",".join(map(str, ids_to_delete))})')
+            placeholders = ','.join('?' * len(ids_to_delete))
+            cursor.execute(f'DELETE FROM people_count_buffer WHERE id IN ({placeholders})', ids_to_delete)
             conn.commit()
             conn.close()
 
@@ -150,9 +148,6 @@ def save_people_count_to_db(people_count):
         
         session.add(people_record)
         session.commit()
-        
-        # Убрали дублирующий вывод успешной отправки, так как данные уже в БД
-        # print(f"Сохранено в БД: {people_count} человек(а) в {record_datetime}")
         
     except Exception as e:
         print(f"Ошибка подключения к БД ({e}). Переход в оффлайн режим.")

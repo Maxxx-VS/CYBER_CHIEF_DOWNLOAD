@@ -37,5 +37,10 @@ CONFIDENCE_THRESHOLD = float(os.getenv('CONFIDENCE_THRESHOLD'))
 # Настройки ROI
 ROI_STR = os.getenv('ROI_POINTS_PEOPLE')
 
+# Настройки обработки ошибок декодирования
+DECODE_ERROR_THRESHOLD = int(os.getenv('DECODE_ERROR_THRESHOLD', 10))
+DECODE_ERROR_WINDOW = int(os.getenv('DECODE_ERROR_WINDOW', 180))
+RECONNECT_ON_DECODE_ERROR = os.getenv('RECONNECT_ON_DECODE_ERROR', 'True').lower() == 'true'
+
 # Выводим информацию о загруженном .env файле для отладки
 print(f"Загружен .env файл из: {env_path}")

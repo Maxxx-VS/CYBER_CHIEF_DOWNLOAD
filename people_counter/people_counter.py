@@ -1,5 +1,3 @@
-# people_counter.py
-
 import cv2
 import time
 import numpy as np
@@ -9,7 +7,6 @@ from config import *
 from video_stream import VideoStream
 from detection_processor import DetectionProcessor
 import schedule_checker
-# Импортируем инициализацию локальной БД
 from database import init_local_db, sync_offline_data
 
 def run_ncnn_realtime():
@@ -84,7 +81,7 @@ def run_ncnn_realtime():
                 video_stream = VideoStream().start()
                 detection_processor = DetectionProcessor(model, roi_points=roi_points).start()
                 
-                time.sleep(2.0) # Разогрев камеры
+                time.sleep(2.0)  # Разогрев камеры
                 
                 # Работаем ровно до конца смены
                 start_loop_time = time.time()
