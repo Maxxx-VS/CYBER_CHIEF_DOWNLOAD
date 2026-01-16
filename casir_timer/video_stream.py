@@ -53,7 +53,7 @@ class VideoStream:
             return False
             
         self.reconnect_attempts += 1
-        print(f"Попытка переподключения #{self.reconnect_attempts}...")
+        # [LOG REMOVED] "Попытка переподключения..."
         
         success = self.initialize_capture()
         
@@ -91,7 +91,7 @@ class VideoStream:
                         self.frame_buffer.append(frame)
                 else:
                     # Проблема с получением кадра
-                    if time.time() - self.last_valid_frame_time > 5.0:
+                    if time.time() - self.last_valid_frame_time > 5.0:  # 5 секунд без валидных кадров
                         if not self.reconnect():
                             break
                             
