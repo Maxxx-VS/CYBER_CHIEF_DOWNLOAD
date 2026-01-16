@@ -98,95 +98,6 @@ def get_trading_point_schedule():
         if Session:
             Session.remove()
 
-def is_cashier_present_now():
-    """
-    Проверяет, находится ли кассир на рабочем месте в текущий момент.
-    Использует данные из таблицы CV_работа_кассира.
-    Возвращает: True - кассир присутствует, False - кассир отсутствует
-    """
-    session = get_db_session()
-    if not session:
-        print("Ошибка: Не удалось получить сессию БД для проверки кассира")
-        return True  # Если нет связи с БД, считаем что кассир на месте
-    
-    try:
-        from datetime import datetime
-        
-        now = datetime.now()
-        
-        # Ищем активный период отсутствия (где кассир ушел, но еще не вернулся)
-        active_absence = session.query(CashierWork).filter(
-            CashierWork.id_точки == ID_POINT,
-            CashierWork.Время_ухода_кассира <= now,
-            CashierWork.Время_появления_кассира == None  # Кассир еще не вернулся
-        ).first()
-        
-        # Если найден активный период отсутствия - кассира нет
-        if active_absence:
-            return False
-        
-        # Ищем период отсутствия, в который попадает текущее время
-        current_absence = session.query(CashierWork).filter(
-            CashierWork.id_точки == ID_POINT,
-            CashierWork.Время_ухода_кассира <= now,
-            CashierWork.Время_появления_кассира >= now
-        ).first()
-        
-        # Если текущее время попадает в период отсутствия - кассира нет
-        if current_absence:
-            return False
-            
-        # Во всех остальных случаях считаем, что кассир на месте
-        return True
-        
-    except Exception as e:
-        print(f"Ошибка при проверке присутствия кассира: {e}")
-        return True  # При ошибке считаем, что кассир на месте
-    finally:
-        if Session:
-            Session.remove()
-
-def get_cashier_work_schedule():
-    """
-    Получение расписания работы кассира из таблицы CV_работа_кассира.
-    Возвращает список периодов отсутствия кассира за сегодня.
-    """
-    session = get_db_session()
-    if not session:
-        print("Ошибка: Не удалось получить сессию БД для загрузки расписания кассира")
-        return []
-
-    try:
-        from datetime import datetime, timedelta, date
-        
-        today = datetime.now().date()
-        tomorrow = today + timedelta(days=1)
-        
-        records = session.query(CashierWork).filter(
-            CashierWork.id_точки == ID_POINT,
-            CashierWork.Время_ухода_кассира >= today,
-            CashierWork.Время_ухода_кассира < tomorrow
-        ).order_by(CashierWork.Время_ухода_кассира).all()
-        
-        periods = []
-        for record in records:
-            period = {
-                'absence_start': record.Время_ухода_кассира,
-                'absence_end': record.Время_появления_кассира if record.Время_появления_кассира else None,
-                'duration_minutes': record.Время_отсутствия_кассира
-            }
-            periods.append(period)
-            
-        print(f"Загружено {len(periods)} периодов отсутствия кассира за сегодня")
-        return periods
-        
-    except Exception as e:
-        print(f"Ошибка при получении расписания кассира: {e}")
-        return []
-    finally:
-        if Session:
-            Session.remove()
-
 # --- Функции локального сохранения ---
 
 def save_client_to_local(app_ts, dep_ts, minutes):
@@ -241,6 +152,8 @@ def sync_offline_data():
             conn.close()
             return # Нет интернета
 
+        # [LOG REMOVED] "Syncing offline data..."
+        
         # Обработка клиентов
         client_ids_to_del = []
         for row in client_rows:
@@ -276,6 +189,7 @@ def sync_offline_data():
             cursor.execute(f'DELETE FROM absence_buffer WHERE id IN ({",".join(map(str, cashier_ids_to_del))})')
         
         conn.commit()
+        # [LOG REMOVED] "Offline data synced."
         conn.close()
 
     except Exception as e:
@@ -307,6 +221,7 @@ def save_absence_to_db(start_time, end_time, absence_minutes):
         )
         session.add(new_record)
         session.commit()
+        # [LOG REMOVED] "Сохранено в БД (Кассир)"
         return True
     except Exception as e:
         print(f"DB Error (Cashier): {e}. Saving locally.")
@@ -336,6 +251,7 @@ def save_client_presence_to_db(appearance_time, departure_time, wait_minutes):
         )
         session.add(new_record)
         session.commit()
+        # [LOG REMOVED] "Сохранено в БД (Клиент)"
         return True
     except Exception as e:
         print(f"DB Error (Client): {e}. Saving locally.")

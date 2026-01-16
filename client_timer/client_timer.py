@@ -14,7 +14,9 @@ from config import (
     TIMEOUT_DURATION_CASSIR, ROI_LIST, MODEL_PATH,
     # Настройки клиента
     CONFIDENCE_THRESHOLD_CLIENT, SHOW_DETECTION_CLIENT, CAPTURE_INTERVAL_CLIENT,
-    CLIENT_APPEARANCE_TIMER, CLIENT_DEPARTURE_TIMER, CASHIER_WAIT_TIMER
+    CLIENT_APPEARANCE_TIMER, CLIENT_DEPARTURE_TIMER, CASHIER_WAIT_TIMER,
+    # Настройки обработки ошибок
+    DECODE_ERROR_THRESHOLD, DECODE_ERROR_WINDOW, RECONNECT_ON_DECODE_ERROR
 )
 
 # Импорты из других модулей
@@ -39,10 +41,18 @@ def run_cashier_session(duration, model, ram_disk_path):
     current_absence_start = None
     timeout_start = None
     is_absent = False
+    last_status_check = time.time()
     
     try:
         while time.time() < session_end_time:
             loop_start = time.time()
+            
+            # Периодическая проверка статуса видеопотока
+            if loop_start - last_status_check > 60:  # Каждую минуту
+                last_status_check = loop_start
+                status = video_stream.get_status()
+                if status['decode_errors']['recent_errors'] > DECODE_ERROR_THRESHOLD // 2:
+                    print(f"[{time.strftime('%H:%M:%S')}] [КАССИР] Высокий уровень ошибок: {status['decode_errors']['recent_errors']}/{DECODE_ERROR_THRESHOLD}")
             
             # Чтение кадра
             ret, frame = video_stream.read()
@@ -145,11 +155,19 @@ def run_client_session(duration, model, ram_disk_path):
     
     client_appearance_timer_start = None
     client_departure_timer_start = None
+    last_status_check = time.time()
     
     try:
         while time.time() < session_end_time:
             iteration_start = time.time()
             current_time = time.time()
+            
+            # Периодическая проверка статуса видеопотока
+            if current_time - last_status_check > 60:  # Каждую минуту
+                last_status_check = current_time
+                status = video_stream.get_status()
+                if status['decode_errors']['recent_errors'] > DECODE_ERROR_THRESHOLD // 2:
+                    print(f"[{time.strftime('%H:%M:%S')}] [КЛИЕНТ] Высокий уровень ошибок: {status['decode_errors']['recent_errors']}/{DECODE_ERROR_THRESHOLD}")
             
             # Чтение кадра
             ret, frame = video_stream.read()
@@ -294,9 +312,6 @@ def start_monitoring_threads(duration, model):
     cashier_ram_disk = setup_ram_disk("cashier")
     client_ram_disk = setup_ram_disk("client")
     
-    # Событие для остановки потоков
-    stop_event = threading.Event()
-    
     # Функции для запуска в потоках
     def cashier_monitoring():
         try:
@@ -342,6 +357,11 @@ def monitor_system():
 
     os.environ['QT_QPA_PLATFORM'] = 'xcb'
     print("Запуск системы мониторинга (Кассир + Клиенты)...")
+    
+    # Выводим настройки обработки ошибок декодирования
+    print(f"[{time.strftime('%H:%M:%S')}] Настройки обработки ошибок декодирования:")
+    print(f"  - Порог ошибок: {DECODE_ERROR_THRESHOLD} за {DECODE_ERROR_WINDOW} сек")
+    print(f"  - Переподключение при ошибках: {'ВКЛЮЧЕНО' if RECONNECT_ON_DECODE_ERROR else 'ВЫКЛЮЧЕНО'}")
 
     try:
         while True:

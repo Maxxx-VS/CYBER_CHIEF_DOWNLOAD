@@ -11,41 +11,46 @@ env_path = current_dir.parent / 'enviroment' / '.env'
 load_dotenv(env_path)
 
 # --- Общие настройки ---
-ID_POINT = int(os.getenv('POINT_ID', '1'))
-RTSP_URL = os.getenv('RTSP_URL_CLIENT')  # Используем RTSP_URL_CLIENT
+ID_POINT = int(os.getenv('POINT_ID'))
+RTSP_URL = os.getenv('RTSP_URL_CLIENT')
 
 # Настройки подключения камеры
-BUFFER_SIZE = int(os.getenv('CAMERA_BUFFER_SIZE', '1'))
-RECONNECT_TIMEOUT = int(os.getenv('CAMERA_RECONNECT_TIMEOUT', '5'))
-MAX_RECONNECT_ATTEMPTS = int(os.getenv('CAMERA_MAX_RECONNECT_ATTEMPTS', '10'))
+BUFFER_SIZE = int(os.getenv('CAMERA_BUFFER_SIZE'))
+RECONNECT_TIMEOUT = int(os.getenv('CAMERA_RECONNECT_TIMEOUT'))
+MAX_RECONNECT_ATTEMPTS = int(os.getenv('CAMERA_MAX_RECONNECT_ATTEMPTS'))
 
 # Модель
-MODEL_PATH = os.getenv('MODEL_PATH', 'yolov8n.pt')
+MODEL_PATH = os.getenv('MODEL_PATH')
+
+# --- Настройки обработки ошибок декодирования ---
+DECODE_ERROR_THRESHOLD = int(os.getenv('DECODE_ERROR_THRESHOLD', 10))
+DECODE_ERROR_WINDOW = int(os.getenv('DECODE_ERROR_WINDOW', 180))
+RECONNECT_ON_DECODE_ERROR = os.getenv('RECONNECT_ON_DECODE_ERROR', 'True').lower() == 'true'
 
 # --- Настройки Базы Данных ---
-DB_HOST = os.getenv('DB_HOST', 'localhost')
-DB_PORT = int(os.getenv('DB_PORT', '5432'))
-DB_NAME = os.getenv('DB_NAME', 'mydb')
-DB_USER = os.getenv('DB_USER', 'user')
-DB_PASSWORD = os.getenv('DB_PASSWORD', 'password')
+DB_HOST = os.getenv('DB_HOST')
+DB_PORT = int(os.getenv('DB_PORT'))
+DB_NAME = os.getenv('DB_NAME')
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
 
 # --- Настройки Мониторинга КАССИРА (Cashier) ---
-CONFIDENCE_THRESHOLD_CASSIR = float(os.getenv('CONFIDENCE_THRESHOLD_CASSIR', '0.5'))
-SHOW_DETECTION_CASSIR = os.getenv('SHOW_DETECTION_CASSIR', 'true').lower() == 'true'
-CAPTURE_INTERVAL_CASSIR = int(os.getenv('CAPTURE_INTERVAL_CASSIR', '1'))
-TIMEOUT_DURATION_CASSIR = int(os.getenv('TIMEOUT_DURATION_CASSIR', '300'))
+CONFIDENCE_THRESHOLD_CASSIR = float(os.getenv('CONFIDENCE_THRESHOLD_CASSIR'))
+SHOW_DETECTION_CASSIR = os.getenv('SHOW_DETECTION_CASSIR').lower() == 'true'
+CAPTURE_INTERVAL_CASSIR = int(os.getenv('CAPTURE_INTERVAL_CASSIR'))
+TIMEOUT_DURATION_CASSIR = int(os.getenv('TIMEOUT_DURATION_CASSIR'))
 ROI1_POINTS_STR = os.getenv('ROI_POINTS_CLI_CASSIR')  # Изменено на CLI_CASSIR
 
 # --- Настройки Мониторинга КЛИЕНТА (Client) ---
-CONFIDENCE_THRESHOLD_CLIENT = float(os.getenv('CONFIDENCE_THRESHOLD_CLIENT', '0.5'))
-SHOW_DETECTION_CLIENT = os.getenv('SHOW_DETECTION_CLIENT', 'true').lower() == 'true'
-CAPTURE_INTERVAL_CLIENT = int(os.getenv('CAPTURE_INTERVAL_CLIENT', '1'))
+CONFIDENCE_THRESHOLD_CLIENT = float(os.getenv('CONFIDENCE_THRESHOLD_CLIENT'))
+SHOW_DETECTION_CLIENT = os.getenv('SHOW_DETECTION_CLIENT').lower() == 'true'
+CAPTURE_INTERVAL_CLIENT = int(os.getenv('CAPTURE_INTERVAL_CLIENT'))
 ROI2_POINTS_STR = os.getenv('ROI_POINTS_CLIENT')
 
 # Таймеры логики клиента
-CLIENT_APPEARANCE_TIMER = int(os.getenv('CLIENT_APPEARANCE_TIMER', '30'))
-CLIENT_DEPARTURE_TIMER = int(os.getenv('CLIENT_DEPARTURE_TIMER', '10'))
-CASHIER_WAIT_TIMER = int(os.getenv('CASHIER_WAIT_TIMER', '60'))
+CLIENT_APPEARANCE_TIMER = int(os.getenv('CLIENT_APPEARANCE_TIMER'))
+CLIENT_DEPARTURE_TIMER = int(os.getenv('CLIENT_DEPARTURE_TIMER'))
+CASHIER_WAIT_TIMER = int(os.getenv('CASHIER_WAIT_TIMER'))
 
 # --- Глобальные переменные состояния ---
 WORK_SCHEDULE = {
@@ -98,3 +103,7 @@ if __name__ == "__main__":
     print(f"DB_HOST: {DB_HOST}")
     print(f"DB_PORT: {DB_PORT}")
     print(f"DB_NAME: {DB_NAME}")
+    print(f"\nНастройки обработки ошибок:")
+    print(f"DECODE_ERROR_THRESHOLD: {DECODE_ERROR_THRESHOLD}")
+    print(f"DECODE_ERROR_WINDOW: {DECODE_ERROR_WINDOW}")
+    print(f"RECONNECT_ON_DECODE_ERROR: {RECONNECT_ON_DECODE_ERROR}")

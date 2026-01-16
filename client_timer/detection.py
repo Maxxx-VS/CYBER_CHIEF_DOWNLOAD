@@ -120,15 +120,15 @@ def draw_detections(frame, detection_info, person_detected, roi_list=None, absen
     """
     # Рисуем области интереса (ROI) если заданы
     if roi_list is not None:
-        colors = [(255, 255, 0)]  # Голубой для ROI
+        colors = [(255, 255, 0), (0, 255, 255)]  # Голубой и желтый для разных ROI
         for i, roi_points in enumerate(roi_list):
             if roi_points is not None:
                 color = colors[i % len(colors)]  # Циклическое использование цветов
                 # Преобразуем точки в формат, подходящий для cv2.polylines
                 pts = np.array(roi_points, dtype=np.int32)
                 cv2.polylines(frame, [pts], True, color, 2)
-                # Подписываем ROI
-                roi_label = f'ROI {i+1} (client)'
+                # Подписываем ROI с указанием назначения
+                roi_label = f'ROI {i+1} (casir)' if i == 0 else f'ROI {i+1} (client)'
                 cv2.putText(frame, roi_label, (roi_points[0][0], roi_points[0][1]-10), 
                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
     
@@ -148,7 +148,7 @@ def draw_detections(frame, detection_info, person_detected, roi_list=None, absen
                    0.5, color, 2)
     
     # Добавляем общую информацию
-    status = "CLIENT PRESENT" if person_detected else "CLIENT ABSENT"
+    status = "CASHIER PRESENT" if person_detected else "CASHIER ABSENT"
     status_color = (0, 255, 0) if person_detected else (0, 0, 255)
     
     cv2.putText(frame, f'Status: {status}', (10, 30), 
@@ -163,5 +163,7 @@ def draw_detections(frame, detection_info, person_detected, roi_list=None, absen
     if timeout_remaining > 0:
         cv2.putText(frame, f'Timeout: {timeout_remaining}s', (10, 100), 
                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 165, 255), 2)
+    
+    # УДАЛЕНЫ: Строки с Max Conf и Active ROIs
     
     return frame
